@@ -15,8 +15,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-function HeaderContainer({ queueMember, queueData, toggleSettings,toggleLogIn }) {
-
+function HeaderContainer({
+  queueMember,
+  queueData,
+  toggleSettings,
+  toggleLogIn,
+}) {
   const [showSettings, setShowSettings] = useState(false);
 
   function doToggleSettings() {
@@ -46,10 +50,8 @@ function HeaderContainer({ queueMember, queueData, toggleSettings,toggleLogIn })
     return (
       <View elevation={5} style={styles.HeaderContainer}>
         <View style={styles.HeaderItems}>
-          <TouchableOpacity
-            style={styles.HeaderItemSM}
-          >
-            <View style={{ left: -5,top:16 }}>
+          <TouchableOpacity style={styles.HeaderItemSM}>
+            <View style={{ left: -5, top: 16 }}>
               <Icon
                 name={showSettings ? "home" : "gear"}
                 type="font-awesome"
@@ -69,7 +71,10 @@ function HeaderContainer({ queueMember, queueData, toggleSettings,toggleLogIn })
               {queueData ? queueData.title : "....."}
             </Text>
           </View>
-          <TouchableOpacity style={styles.HeaderItemSM} onPress={()=>toggleLogIn()}>
+          <TouchableOpacity
+            style={styles.HeaderItemSM}
+            onPress={() => toggleLogIn()}
+          >
             <Image
               style={{ width: 40, height: 40, left: 40, top: 10 }}
               source={require("../../images/next-up_icon-color.jpeg")}

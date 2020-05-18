@@ -39,32 +39,19 @@ class ManageQueue extends Component {
     queueData.count = count;
 
     //update the app.js state
-    await updateUserQueue(queueData);
-
-    //update this state
-    await this.setState((state) => ({
-      ...state,
-      queueData,
-    }));
+    updateUserQueue(queueData);
   };
 
   updateQueueMeta = async (queueData) => {
-
     let { updateUserQueue } = this.props;
 
     //update the app.js state
-    await updateUserQueue(queueData);
-
-    //update this state
-    await this.setState((state) => ({
-      ...state,
-      ...queueData,
-    }));
-    return;
-  }
+    updateUserQueue(queueData);
+  };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let { queueData, showSettings } = nextProps;
+
     if (queueData) {
       return {
         queueData,
@@ -78,12 +65,17 @@ class ManageQueue extends Component {
 
   render() {
     let { isSet, queueData, showSettings } = this.state;
-    let { updateQueueCount,updateQueueMeta } = this;
+    let { updateQueueCount, updateQueueMeta } = this;
     let { userObj } = this.props;
     if (isSet) {
       if (showSettings) {
         return (
-          <QueueMeta updateQueueMeta={updateQueueMeta} editing={true} queueData={queueData} userObj={userObj} />
+          <QueueMeta
+            updateQueueMeta={updateQueueMeta}
+            editing={true}
+            queueData={queueData}
+            userObj={userObj}
+          />
         );
       } else {
         return (
