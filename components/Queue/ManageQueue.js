@@ -37,7 +37,8 @@ class ManageQueue extends Component {
     let { queueData } = this.state;
 
     queueData.count = count;
-
+    alert(JSON.stringify(queueData));
+    // return;
     //update the app.js state
     updateUserQueue(queueData);
   };

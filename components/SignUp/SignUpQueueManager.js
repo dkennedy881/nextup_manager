@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, { useState, Component } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,61 +11,80 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Keyboard
-} from 'react-native';
+  Keyboard,
+} from "react-native";
 
 //comps
-import Step1 from './Steps/Step1';
-import Step2 from './Steps/Step2';
+import Step1 from "./Steps/Step1";
+import Step2 from "./Steps/Step2";
 
 class SignUpQueueManager extends Component {
   constructor(props) {
     super(props);
     this.state = {
       step: 1,
-      phoneNumber: '',
-      name: '',
-      zipCode: '',
+      phoneNumber: "",
+      name: "",
+      zipCode: "",
+      password: "",
+      passwordValidate: "",
     };
   }
 
-  updatePhoneNumber = phoneNumber => {
-    this.setState({phoneNumber});
+  updatePhoneNumber = (phoneNumber) => {
+    this.setState({ phoneNumber });
   };
 
-  updateName = name => {
-    this.setState({name});
+  updateName = (name) => {
+    this.setState({ name });
   };
 
-  updateZip = zipCode => {
-    this.setState({zipCode});
+  updatePassword = (password) => {
+    this.setState({ password });
+  };
+
+  updatePasswordValidate = (passwordValidate) => {
+    this.setState({ passwordValidate });
+  };
+
+  updateZip = (zipCode) => {
+    this.setState({ zipCode });
   };
 
   validatePhoneNumber = () => {};
 
   callSignIn = () => {
-    let {phoneNumber, name, zipCode} = this.state;
-    this.props.signUp(this.props.queueMember, phoneNumber, name, zipCode);
+    let { phoneNumber, name, password } = this.state;
+    this.props.signUp(this.props.queueMember, phoneNumber, name, password);
   };
 
   forwardState = () => {
-    this.setState({step: this.state.step + 1});
+    this.setState({ step: this.state.step + 1 });
   };
 
   backState = () => {
-    this.setState({step: this.state - 1});
+    this.setState({ step: this.state - 1 });
   };
 
   render() {
-    let {step, name, phoneNumber, zipCode} = this.state;
+    let {
+      step,
+      name,
+      phoneNumber,
+      zipCode,
+      password,
+      passwordValidate,
+    } = this.state;
     let {
       forwardState,
       callSignIn,
       updateName,
       updatePhoneNumber,
       updateZip,
+      updatePassword,
+      updatePasswordValidate,
     } = this;
-    let {toggleLogInSignUp, queueMember} = this.props;
+    let { toggleLogInSignUp, queueMember } = this.props;
 
     switch (step) {
       case 1:
@@ -76,6 +95,10 @@ class SignUpQueueManager extends Component {
             toggleLogInSignUp={toggleLogInSignUp}
             updateName={updateName}
             name={name}
+            password={password}
+            passwordValidate={passwordValidate}
+            updatePassword={updatePassword}
+            updatePasswordValidate={updatePasswordValidate}
             updatePhoneNumber={updatePhoneNumber}
             phoneNumber={phoneNumber}
           />
@@ -99,8 +122,8 @@ export default SignUpQueueManager;
 
 const styles = StyleSheet.create({
   signUpContainer: {
-    borderColor: '#eeee',
-    borderStyle: 'solid',
+    borderColor: "#eeee",
+    borderStyle: "solid",
     borderWidth: 1,
     padding: 30,
   },
@@ -114,18 +137,18 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   signUpFieldTextContainer: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     marginTop: 15,
   },
   signUpFieldBtnContainer: {
-    display: 'flex',
+    display: "flex",
     marginTop: 15,
-    flexDirection: 'row-reverse',
+    flexDirection: "row-reverse",
   },
   signInBtn: {
-    borderColor: '#eeee',
-    borderStyle: 'solid',
+    borderColor: "#eeee",
+    borderStyle: "solid",
     borderWidth: 1,
     paddingTop: 10,
     paddingBottom: 10,

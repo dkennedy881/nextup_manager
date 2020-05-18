@@ -8,6 +8,7 @@ import ManageQueue from "./components/Queue/ManageQueue";
 //containers
 import SignUpContainer from "./components/SignUp/SignUpContainer";
 import LogInContainer from "./components/LogIn/LogInContainer";
+import { StitchAppClientConfiguration } from "mongodb-stitch-react-native-sdk";
 
 export default class App extends Component {
   state = {
@@ -37,10 +38,9 @@ export default class App extends Component {
       try {
         userObj = await this.logIn(phoneNumber, password);
       } catch (e) {
-        alert("User Not Found");
+        alert(e);
         return;
       }
-
       await this.setState((state) => ({
         ...state,
         userObj,
@@ -48,12 +48,24 @@ export default class App extends Component {
       }));
 
       try {
-        queueData = await this.getQueueData(userObj.id);
+        queueData = await this.getQueueData(userObj.id["$numberLong"]);
+        let newJSON = {
+          title: queueData.title,
+          message: queueData.message,
+          hours: {
+            open: queueData.open,
+            close: queueData.close,
+          },
+          active: queueData.active,
+          count: queueData.count["$numberLong"],
+          id: queueData.id["$numberLong"],
+        };
+        queueData = newJSON;
       } catch (e) {
         alert("No User Queue Found");
         return;
       }
-
+      // return;
       await this.setState((state) => ({
         ...state,
         queueData,
@@ -61,67 +73,83 @@ export default class App extends Component {
     }
   };
 
-  logIn = async (phoneNumber, password) => {
-    let {
-      data,
-    } = await Axios.post(
-      "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/addQueueManager/incoming_webhook/webhook0",
-      { phoneNumber: phoneNumber, password: password }
-    );
-
-    alert(JSON.stringify(data));
-    return;
-    //temp
-    return new Promise((res, rej) => {
-      setTimeout(() => {
-        res({
-          businessNumber: "2543193688",
-          password: "1234",
-          id: 8,
-        });
-      }, 100);
+  logIn = (phoneNumber, password) => {
+    return new Promise(async (res, rej) => {
+      try {
+        let { data } = await Axios.post(
+          "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/logInQueueManager/incoming_webhook/webhook0",
+          {
+            phoneNumber: String(phoneNumber),
+            password: String(password),
+          }
+        );
+        if (data) {
+          res(data);
+        } else {
+          rej("User Not Found");
+        }
+      } catch (e) {
+        alert(e);
+      }
     });
   };
 
   getQueueData = async (id) => {
     //temp
-    return new Promise((res, rej) => {
-      setTimeout(() => {
-        res({
-          title: "Some business",
-          message: "this is the message",
-          hours: {
-            open: "9:00 am",
-            close: "5:00 pm",
-          },
-          count: 0,
-          active: true,
-        });
-      }, 500);
+    return new Promise(async (res, rej) => {
+      try {
+        let { data } = await Axios.post(
+          "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/getUserQueue/incoming_webhook/webhook0",
+          {
+            id: parseInt(id),
+          }
+        );
+        if (data) {
+          res(data);
+        } else {
+          rej("User Not Found");
+        }
+      } catch (e) {
+        alert(e);
+      }
     });
   };
 
-  updateUserQueue = async ({ title, message, hours, count, active }) => {
-    //temp
+  updateUserQueue = ({ title, message, hours, count, active, id }) => {
     return new Promise(async (res, rej) => {
-      setTimeout(() => {
-        res({
-          title,
-          message,
-          hours: hours,
-          count,
-          active,
+      try {
+        let { data: queueData } = await Axios.post(
+          "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/updateUserQueue/incoming_webhook/webhook0",
+          {
+            title: title,
+            message: message,
+            open: hours.open,
+            close: hours.close,
+            count: parseInt(count),
+            active: active,
+            id: parseInt(id),
+          }
+        );
+        let newJSON = {
+          title: queueData.title,
+          message: queueData.message,
+          hours: {
+            open: queueData.open,
+            close: queueData.close,
+          },
+          active: queueData.active,
+          count: queueData.count["$numberLong"],
+          id: queueData.id["$numberLong"],
+        };
+        queueData = newJSON;
+
+        await this.setState({
+          queueData: queueData,
         });
-      }, 100);
-      await this.setState({
-        queueData: {
-          title,
-          message,
-          hours: hours,
-          count,
-          active,
-        },
-      });
+        res(queueData);
+      } catch (e) {
+        alert(e);
+      }
     });
   };
 
@@ -197,7 +225,11 @@ function DisplayLogInSignUp({ isSignedUp, toggleLogIn, toggleLogInSignUp }) {
           toggleLogInSignUp={toggleLogInSignUp}
         />
       ) : (
-        <SignUpContainer></SignUpContainer>
+        <SignUpContainer
+          queueMember={false}
+          toggleLogInSignUp={toggleLogInSignUp}
+          toggleLogIn={toggleLogIn}
+        ></SignUpContainer>
       )}
     </View>
   );

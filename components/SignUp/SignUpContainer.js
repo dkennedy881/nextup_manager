@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import Axios from "axios";
 
 //comps
 import SignUpQueueMember from "./SignUpQueueMember";
@@ -23,13 +24,29 @@ class SignUpContainer extends Component {
     this.state = {};
   }
 
-  signUp = (type, phoneNumber, name, zipCode) => {
+  signUp = async (type, phoneNumber, businessName, password) => {
     if (type) {
       alert(`Phone Number - ${phoneNumber} Name - ${name} Zip - ${zipCode}`);
     } else {
-      alert(
-        `Business Phone Number - ${phoneNumber} Business Name - ${name} Business Zip - ${zipCode}`
+      let { data: userObj } = await Axios.post(
+        "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/addQueueManager/incoming_webhook/webhook0",
+        {
+          phoneNumber: phoneNumber,
+          password: password,
+        }
       );
+
+      let userId = userObj.id["$numberLong"];
+      let { data: queueData } = await Axios.post(
+        "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/addQueue/incoming_webhook/webhook0",
+        {
+          businessName: businessName,
+          id: userId,
+        }
+      );
+
+      alert(JSON.stringify(queueData));
+      return;
     }
     this.props.toggleLogIn();
   };

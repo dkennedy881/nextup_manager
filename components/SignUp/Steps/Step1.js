@@ -11,7 +11,7 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from "react-native";
 
 function Step1({
@@ -21,60 +21,64 @@ function Step1({
   phoneNumber,
   updateName,
   name,
+  password,
+  passwordValidate,
+  updatePassword,
+  updatePasswordValidate,
 }) {
   return (
     <React.Fragment>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
-      <Text style={styles.signUpTitleText}>Sign Up</Text>
-      <View style={styles.signUpFieldTextContainer}>
-        <Text style={styles.signUpFieldText}>Business Name: </Text>
-        <TextInput
-          value={name}
-          onChangeText={(text) => updateName(text)}
-          placeholder="Awesome Business"
-        />
-      </View>
-      <View style={styles.signUpFieldTextContainer}>
-        <Text style={styles.signUpFieldText}>Phone Number: </Text>
-        <TextInput
-          value={phoneNumber}
-          onChangeText={(text) => updatePhoneNumber(text)}
-          placeholder="Phone Number"
-        />
-      </View>
-      <View style={styles.signUpFieldTextContainer}>
-        <Text style={styles.signUpFieldText}>Password: </Text>
-        <TextInput
-          value={phoneNumber}
-          onChangeText={(text) => updatePhoneNumber(text)}
-          placeholder="Account Password"
-        />
-      </View>
-      <View style={styles.signUpFieldTextContainer}>
-        <Text style={styles.signUpFieldText}>Re-enter Password: </Text>
-        <TextInput
-          value={phoneNumber}
-          onChangeText={(text) => updatePhoneNumber(text)}
-          placeholder="Re-enter Account Password"
-        />
-      </View>
-      <View style={styles.signUpFieldBtnContainer}>
-        <TouchableOpacity style={styles.signInBtn} onPress={forwardState}>
-          <Text>Verify Account</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.signUpFieldBtnContainer}>
-        <TouchableOpacity
-          style={styles.forgotPasswordBtn}
-          onPress={toggleLogInSignUp}
-        >
-          <Text>Already have an account? Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-      </View>
+          <Text style={styles.signUpTitleText}>Sign Up</Text>
+          <View style={styles.signUpFieldTextContainer}>
+            <Text style={styles.signUpFieldText}>Business Name: </Text>
+            <TextInput
+              value={name}
+              onChangeText={(text) => updateName(text)}
+              placeholder="Awesome Business"
+            />
+          </View>
+          <View style={styles.signUpFieldTextContainer}>
+            <Text style={styles.signUpFieldText}>Phone Number: </Text>
+            <TextInput
+              value={phoneNumber}
+              onChangeText={(text) => updatePhoneNumber(text)}
+              placeholder="Phone Number"
+            />
+          </View>
+          <View style={styles.signUpFieldTextContainer}>
+            <Text style={styles.signUpFieldText}>Password: </Text>
+            <TextInput
+              value={password}
+              onChangeText={(text) => updatePassword(text)}
+              placeholder="Account Password"
+            />
+          </View>
+          <View style={styles.signUpFieldTextContainer}>
+            <Text style={styles.signUpFieldText}>Re-enter Password: </Text>
+            <TextInput
+              value={passwordValidate}
+              onChangeText={(text) => updatePasswordValidate(text)}
+              placeholder="Re-enter Account Password"
+            />
+          </View>
+          <View style={styles.signUpFieldBtnContainer}>
+            <TouchableOpacity style={styles.signInBtn} onPress={forwardState}>
+              <Text>Verify Account</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.signUpFieldBtnContainer}>
+            <TouchableOpacity
+              style={styles.forgotPasswordBtn}
+              onPress={toggleLogInSignUp}
+            >
+              <Text>Already have an account? Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </TouchableWithoutFeedback>
-      </React.Fragment>
+    </React.Fragment>
   );
 }
 
