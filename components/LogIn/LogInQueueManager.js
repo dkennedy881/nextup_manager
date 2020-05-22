@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, { useState, Component } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,34 +10,47 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
 
-function LogInQueueManager({logIn,toggleLogInSignUp}) {
+function LogInQueueManager({ logIn, toggleLogInSignUp }) {
+  const [password, setPassword] = useState("");
 
-  const [password,setPassword] = useState('');
-
-  const [phoneNumber,setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   return (
-    <React.Fragment>
+    <View style={styles.logInContainer}>
       <Text style={styles.logInTitleText}>Log In</Text>
       <View style={styles.logInFieldTextContainer}>
         <Text style={styles.logInFieldText}>Phone Number: </Text>
-        <TextInput placeholder="Business Phone Number" onChangeText={(value)=>setPhoneNumber(value)} />
+        <TextInput
+          style={styles.inputField}
+          placeholder="Business Phone Number"
+          onChangeText={(value) => setPhoneNumber(value)}
+        />
       </View>
       <View style={styles.logInFieldTextContainer}>
         <Text style={styles.logInFieldText}>Password: </Text>
-        <TextInput placeholder="Password" onChangeText={(value)=>setPassword(value)} />
+        <TextInput
+          style={styles.inputField}
+          placeholder="Password"
+          onChangeText={(value) => setPassword(value)}
+        />
       </View>
       <View style={styles.logInFieldBtnContainer}>
-        <TouchableOpacity style={styles.signInBtn} onPress={()=>logIn(phoneNumber,password)}>
+        <TouchableOpacity
+          style={styles.signInBtn}
+          onPress={() => logIn(phoneNumber, password)}
+        >
           <Text>Sign In</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.forgotPasswordBtn} onPress={toggleLogInSignUp}>
+        <TouchableOpacity
+          style={styles.forgotPasswordBtn}
+          onPress={toggleLogInSignUp}
+        >
           <Text>Dont have an account? Sign Up</Text>
         </TouchableOpacity>
       </View>
-    </React.Fragment>
+    </View>
   );
 }
 
@@ -45,41 +58,49 @@ export default LogInQueueManager;
 
 const styles = StyleSheet.create({
   logInContainer: {
-    borderColor: '#eeee',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    padding: 30,
+    // borderColor: "#eeee",
+    // borderStyle: "solid",
+    // borderWidth: 1,
+    // padding: 30,
   },
   logInFieldTextContainer: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     marginTop: 15,
   },
   logInFieldBtnContainer: {
-    display: 'flex',
+    display: "flex",
     marginTop: 15,
-    flexDirection: 'row-reverse',
+    flexDirection: "row-reverse",
   },
-  signInBtn:{
-    borderColor: '#eeee',
-    borderStyle: 'solid',
+  signInBtn: {
+    borderColor: "#eeee",
+    borderStyle: "solid",
     borderWidth: 1,
-    paddingTop:10,
-    paddingBottom:10,
-    paddingRight:15,
-    paddingLeft:15,
-    borderRadius:9
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 15,
+    paddingLeft: 15,
+    borderRadius: 9,
   },
-  forgotPasswordBtn:{
-    paddingTop:10,
-    paddingBottom:10,
-    paddingRight:15,
-    paddingLeft:15
+  forgotPasswordBtn: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 15,
+    paddingLeft: 15,
   },
   logInTitleText: {
     fontSize: 25,
   },
   logInFieldText: {
     fontSize: 15,
+  },
+  inputField: {
+    flex: 1,
+    borderWidth: 0.5,
+    borderTopColor: "transparent",
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "#cccc",
   },
 });

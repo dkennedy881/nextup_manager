@@ -9,6 +9,9 @@ import {
   Image,
   FlatList,
   TextInput,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
 } from "react-native";
 
 //comps
@@ -25,25 +28,36 @@ class LogInContainer extends Component {
     let { queueMember, toggleLogInSignUp } = this.props;
     if (queueMember) {
       return (
-        <View style={styles.logInContainer}>
-          <Image
-            style={{ width: 150, height: 40 }}
-            source={require("../../images/next-up_text-color.jpeg")}
-          />
-          <LogInQueueMember
-            logIn={this.logIn}
-            toggleLogInSignUp={toggleLogInSignUp}
-          />
-        </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.logInContainer}>
+            <Image
+              style={{ width: 150, height: 40 }}
+              source={require("../../images/next-up_text-color.jpeg")}
+            />
+            <LogInQueueMember
+              logIn={this.logIn}
+              toggleLogInSignUp={toggleLogInSignUp}
+            />
+          </View>
+        </TouchableWithoutFeedback>
       );
     } else {
       return (
-        <View style={styles.logInContainer}>
-          <LogInQueueManager
-            logIn={this.logIn}
-            toggleLogInSignUp={toggleLogInSignUp}
-          />
-        </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <KeyboardAvoidingView
+            enabled
+            style={{}}
+            keyboardVerticalOffset={0}
+            behavior="padding"
+          >
+            <View style={styles.logInContainer}>
+              <LogInQueueManager
+                logIn={this.logIn}
+                toggleLogInSignUp={toggleLogInSignUp}
+              />
+            </View>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       );
     }
   }
@@ -51,9 +65,6 @@ class LogInContainer extends Component {
 
 const styles = StyleSheet.create({
   logInContainer: {
-    borderColor: "#eeee",
-    borderStyle: "solid",
-    borderWidth: 1,
     padding: 30,
     alignSelf: "stretch",
     overflow: "hidden",

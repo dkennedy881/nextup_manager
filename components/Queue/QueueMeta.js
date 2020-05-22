@@ -29,6 +29,8 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
   const [id, setId] = useState(queueData.id);
   const [count, setCount] = useState(queueData.count);
   const [active, setactive] = useState(queueData.active);
+  const [address, setAddress] = useState(queueData.address);
+  const [zipCode, setZipCode] = useState(queueData.zipCode);
 
   function update() {
     updateQueueMeta({
@@ -41,6 +43,8 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
       },
       count,
       active,
+      address,
+      zipCode,
     });
   }
 
@@ -108,6 +112,25 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                   onChangeText={(value) => setClose(value)}
                 ></TextInput>
               </View>
+
+              <View style={styles.MetaRow}>
+                <Text style={styles.MetaTitleText}>Address</Text>
+                <TextInput
+                  style={styles.MetaDataTextInput}
+                  defaultValue={address}
+                  onChangeText={(value) => setAddress(value)}
+                ></TextInput>
+              </View>
+
+              <View style={styles.MetaRow}>
+                <Text style={styles.MetaTitleText}>Zip Code</Text>
+                <TextInput
+                  style={styles.MetaDataTextInput}
+                  defaultValue={zipCode}
+                  onChangeText={(value) => setZipCode(value)}
+                ></TextInput>
+              </View>
+
               <View style={styles.ButtonRow}>
                 <TouchableOpacity
                   style={styles.SaveButton}

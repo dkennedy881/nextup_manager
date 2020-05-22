@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import Axios from "axios";
 
 //comps
@@ -8,7 +15,6 @@ import ManageQueue from "./components/Queue/ManageQueue";
 //containers
 import SignUpContainer from "./components/SignUp/SignUpContainer";
 import LogInContainer from "./components/LogIn/LogInContainer";
-import { StitchAppClientConfiguration } from "mongodb-stitch-react-native-sdk";
 
 export default class App extends Component {
   state = {
@@ -32,6 +38,8 @@ export default class App extends Component {
         userObj: false,
         queueData: false,
         isLoggedIn: !isLoggedIn,
+        isSignedUp: true,
+        showSettings: false,
       }));
     } else {
       //1. use params for log in
@@ -59,6 +67,8 @@ export default class App extends Component {
           active: queueData.active,
           count: queueData.count["$numberLong"],
           id: queueData.id["$numberLong"],
+          address: queueData.address,
+          zipCode: queueData.zipCode,
         };
         queueData = newJSON;
       } catch (e) {
@@ -115,7 +125,16 @@ export default class App extends Component {
     });
   };
 
-  updateUserQueue = ({ title, message, hours, count, active, id }) => {
+  updateUserQueue = ({
+    title,
+    message,
+    hours,
+    count,
+    active,
+    id,
+    address,
+    zipCode,
+  }) => {
     return new Promise(async (res, rej) => {
       try {
         let { data: queueData } = await Axios.post(
@@ -128,6 +147,8 @@ export default class App extends Component {
             count: parseInt(count),
             active: active,
             id: parseInt(id),
+            address: address,
+            zipCode: zipCode,
           }
         );
         let newJSON = {
@@ -140,6 +161,8 @@ export default class App extends Component {
           active: queueData.active,
           count: queueData.count["$numberLong"],
           id: queueData.id["$numberLong"],
+          address: queueData.address,
+          zipCode: queueData.zipCode,
         };
         queueData = newJSON;
 
@@ -174,27 +197,30 @@ export default class App extends Component {
 
     if (isLoggedIn)
       return (
-        <View style={styles.loggedInContainer}>
-          <HeaderContainer
-            queueMember={false}
-            toggleLogIn={toggleLogIn}
-            queueData={queueData}
-            toggleSettings={toggleSettings}
-          ></HeaderContainer>
-          <ManageQueue
-            showSettings={showSettings}
-            queueData={queueData}
-            updateUserQueue={updateUserQueue}
-          ></ManageQueue>
-        </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.loggedInContainer}>
+            <HeaderContainer
+              queueMember={false}
+              toggleLogIn={toggleLogIn}
+              toggleSettings={toggleSettings}
+            ></HeaderContainer>
+            <ManageQueue
+              showSettings={showSettings}
+              queueData={queueData}
+              updateUserQueue={updateUserQueue}
+            ></ManageQueue>
+          </View>
+        </TouchableWithoutFeedback>
       );
     else
       return (
-        <DisplayLogInSignUp
-          isSignedUp={isSignedUp}
-          toggleLogIn={toggleLogIn}
-          toggleLogInSignUp={toggleLogInSignUp}
-        ></DisplayLogInSignUp>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <DisplayLogInSignUp
+            isSignedUp={isSignedUp}
+            toggleLogIn={toggleLogIn}
+            toggleLogInSignUp={toggleLogInSignUp}
+          ></DisplayLogInSignUp>
+        </TouchableWithoutFeedback>
       );
   }
 }

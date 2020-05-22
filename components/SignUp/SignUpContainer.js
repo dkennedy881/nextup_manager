@@ -11,6 +11,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
 import Axios from "axios";
 
@@ -24,9 +25,16 @@ class SignUpContainer extends Component {
     this.state = {};
   }
 
-  signUp = async (type, phoneNumber, businessName, password) => {
+  signUp = async (
+    type,
+    phoneNumber,
+    businessName,
+    password,
+    address,
+    zipCode
+  ) => {
     if (type) {
-      alert(`Phone Number - ${phoneNumber} Name - ${name} Zip - ${zipCode}`);
+      // alert(`Phone Number - ${phoneNumber} Name - ${name} Zip - ${zipCode}`);
     } else {
       let { data: userObj } = await Axios.post(
         "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/addQueueManager/incoming_webhook/webhook0",
@@ -42,13 +50,16 @@ class SignUpContainer extends Component {
         {
           businessName: businessName,
           id: userId,
+          address: address,
+          zipCode: zipCode,
         }
       );
 
-      alert(JSON.stringify(queueData));
+      // alert(JSON.stringify(queueData));
+      this.props.toggleLogIn(phoneNumber, password);
       return;
     }
-    this.props.toggleLogIn();
+    // this.props.toggleLogIn();
   };
 
   render() {
@@ -65,16 +76,23 @@ class SignUpContainer extends Component {
       );
     } else {
       return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.signUpContainer}>
-            <SignUpQueueManager
-              signUp={this.signUp}
-              toggleLogInSignUp={toggleLogInSignUp}
-              queueMember={false}
-              toggleLogIn={toggleLogIn}
-            />
-          </View>
-        </TouchableWithoutFeedback>
+        <KeyboardAvoidingView
+          enabled
+          style={{}}
+          keyboardVerticalOffset={0}
+          behavior="padding"
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.signUpContainer}>
+              <SignUpQueueManager
+                signUp={this.signUp}
+                toggleLogInSignUp={toggleLogInSignUp}
+                queueMember={false}
+                toggleLogIn={toggleLogIn}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       );
     }
   }

@@ -1,5 +1,5 @@
-import React, {useState, Component} from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+import React, { useState, Component } from "react";
+import LinearGradient from "react-native-linear-gradient";
 
 import {
   SafeAreaView,
@@ -14,142 +14,158 @@ import {
   ImageBackground,
   TouchableOpacity,
   TextInput,
-  Keyboard
-
-} from 'react-native';
+  Keyboard,
+} from "react-native";
 
 class Counter extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        count: 0,
-        isSet: false,
-      };
-    }
-  
-    increment = () => {
-      let {count} = this.state;
-      this.setState({count:parseInt(count+1)});
-      Keyboard.dismiss()
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0,
+      isSet: false,
     };
-  
-    decrement = () => {
-      let {count} = this.state;
-      if(count>0) this.setState({count:parseInt(count-1)});
-      Keyboard.dismiss()
-    };
+  }
 
-    updateTextInput = (count) =>{
-        if(count>0) this.setState({count:parseInt(count)});
+  increment = () => {
+    let { count } = this.state;
+    count = parseInt(count) + 1;
+    this.setState({ count: parseInt(count) });
+    Keyboard.dismiss();
+  };
+
+  decrement = () => {
+    let { count } = this.state;
+    count = parseInt(count) - 1;
+    if (count >= 0) this.setState({ count: parseInt(count) });
+    Keyboard.dismiss();
+  };
+
+  updateTextInput = (count) => {
+    if (count !== "") {
+      if (count >= 0) this.setState({ count: parseInt(count) });
+    } else {
+      this.setState({ count: parseInt(0) });
     }
-  
-    componentDidMount() {
-      if (!this.state.isSet) {
-        let {count} = this.props;
-        this.setState(state => ({
-          ...state,
-          count,
-          isSet: !state.isSet,
-        }));
-      }
-    }
-  
-    render() {
-      let {count} = this.state;
-      let {updateTextInput} = this;
-      let {updateQueueCount} = this.props;
-      return (
-        <View colors={['#317791', '#317791', '#FFFFFF']} style={styles.CountContainer}>
-          <View style={styles.countTextContainer}>
-            <TextInput keyboardType={'numeric'} style={styles.countText} onChangeText={(count)=>{
-                updateTextInput(count)
-            }}>{count}</TextInput>
-          </View>
-          <View style={styles.CounterBtnContainer}>
-            <TouchableOpacity style={styles.countBtnL}  onPress={this.decrement}>
-              <Text style={styles.countBtnText}>-</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.countBtnCenter} onPress={()=>{updateQueueCount(count)}}>
-              <Text style={styles.countBtnCenterText}>update</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.countBtnR} onPress={this.increment}>
-              <Text style={styles.countBtnText}>+</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
+  };
+
+  componentDidMount() {
+    if (!this.state.isSet) {
+      let { count } = this.props;
+      this.setState((state) => ({
+        ...state,
+        count,
+        isSet: !state.isSet,
+      }));
     }
   }
-  
-  export default Counter;
 
+  render() {
+    let { count } = this.state;
+    let { updateTextInput } = this;
+    let { updateQueueCount } = this.props;
+    return (
+      <View
+        colors={["#317791", "#317791", "#FFFFFF"]}
+        style={styles.CountContainer}
+      >
+        <View style={styles.countTextContainer}>
+          <TextInput
+            keyboardType={"numeric"}
+            style={styles.countText}
+            onChangeText={(count) => {
+              updateTextInput(count);
+            }}
+          >
+            {count}
+          </TextInput>
+        </View>
+        <View style={styles.CounterBtnContainer}>
+          <TouchableOpacity style={styles.countBtnL} onPress={this.decrement}>
+            <Text style={styles.countBtnText}>-</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.countBtnCenter}
+            onPress={() => {
+              updateQueueCount(count);
+            }}
+          >
+            <Text style={styles.countBtnCenterText}>update</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.countBtnR} onPress={this.increment}>
+            <Text style={styles.countBtnText}>+</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+}
+
+export default Counter;
 
 const styles = StyleSheet.create({
-
-    CountContainer: {
-      backgroundColor: 'white',
-      borderRadius: 9,
-      width: '65%',
-      borderWidth: 1,
-      borderColor: '#eee',
-      alignContent:"center",
-      shadowColor: '#000000',
-      shadowOffset: {
-        width: 0,
-        height: 1
-      },
-      shadowRadius: 4,
-      shadowOpacity: .2,
+  CountContainer: {
+    backgroundColor: "white",
+    borderRadius: 9,
+    width: "65%",
+    borderWidth: 1,
+    borderColor: "#eee",
+    alignContent: "center",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
     },
-    countTextContainer: {
-      paddingTop: 50,
-      paddingBottom: 50,
-      backgroundColor:"#6da8bd",
-      borderTopRightRadius: 9,
-      borderTopLeftRadius: 9,
-    },
-    countText: {
-      fontSize: 60,
-      textAlign: 'center',
-      color:"white"
-    },
-    CounterBtnContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      borderBottomRightRadius: 9,
-      borderBottomLeftRadius: 9,
-    },
-    countBtnR: {
-      flex: 1,
-      padding: 10,
-      textAlign: 'center',
-      backgroundColor: '#eeeeee',
-      borderBottomRightRadius: 9,
-    },
-    countBtnL: {
-      flex: 1,
-      padding: 10,
-      textAlign: 'center',
-      backgroundColor: '#eeeeee',
-      borderBottomLeftRadius: 9,
-    },
-    countBtnText: {
-      textAlign: 'center',
-      fontSize: 20,
-      fontWeight: '800',
-    },
-    countBtnCenter: {
-      flex: 1,
-      padding: 10,
-      textAlign: 'center',
-      backgroundColor: '#eeeeee',
-      borderLeftWidth:.5,
-      borderRightWidth:.5,
-      borderColor: '#aaaaaa',
-    },
-    countBtnCenterText: {
-      textAlign: 'center',
-      fontWeight: '800',
-    },
-  });
-  
+    shadowRadius: 4,
+    shadowOpacity: 0.2,
+  },
+  countTextContainer: {
+    paddingTop: 50,
+    paddingBottom: 50,
+    backgroundColor: "#6da8bd",
+    borderTopRightRadius: 9,
+    borderTopLeftRadius: 9,
+  },
+  countText: {
+    fontSize: 60,
+    textAlign: "center",
+    color: "white",
+  },
+  CounterBtnContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    borderBottomRightRadius: 9,
+    borderBottomLeftRadius: 9,
+  },
+  countBtnR: {
+    flex: 1,
+    padding: 10,
+    textAlign: "center",
+    backgroundColor: "#eeeeee",
+    borderBottomRightRadius: 9,
+  },
+  countBtnL: {
+    flex: 1,
+    padding: 10,
+    textAlign: "center",
+    backgroundColor: "#eeeeee",
+    borderBottomLeftRadius: 9,
+  },
+  countBtnText: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "800",
+  },
+  countBtnCenter: {
+    flex: 1,
+    padding: 10,
+    textAlign: "center",
+    backgroundColor: "#eeeeee",
+    borderLeftWidth: 0.5,
+    borderRightWidth: 0.5,
+    borderColor: "#aaaaaa",
+  },
+  countBtnCenterText: {
+    textAlign: "center",
+    fontWeight: "800",
+  },
+});

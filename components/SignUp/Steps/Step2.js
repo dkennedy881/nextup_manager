@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, { useState, Component } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,25 +10,43 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
 
-function Step2({forwardState,callSignIn,updateZip,zipCode}) {
+function Step2({
+  forwardState,
+  callSignIn,
+  updateZip,
+  zipCode,
+  updateAddress,
+  address,
+}) {
   return (
     <React.Fragment>
       <Text style={styles.signUpTitleText}>Verified!</Text>
       <Text style={styles.signUpSimpleText}>
-        Please Enter your ZIP Code so that we can recoment places or whatever.
+        Please Enter your Address and ZIP Code.
       </Text>
       <View style={styles.signUpFieldTextContainer}>
+        <Text style={styles.signUpFieldText}>Address: </Text>
+        <TextInput
+          style={styles.inputField}
+          onChangeText={(text) => updateAddress(text)}
+          value={address}
+          placeholder="1234 Some Street"
+        />
+      </View>
+      <View style={styles.signUpFieldTextContainer}>
         <Text style={styles.signUpFieldText}>ZIP/Postal Code: </Text>
-        <TextInput onChangeText={(text)=>updateZip(text)} value={zipCode} placeholder="78748" />
+        <TextInput
+          style={styles.inputField}
+          onChangeText={(text) => updateZip(text)}
+          value={zipCode}
+          placeholder="78748"
+        />
       </View>
       <View style={styles.signUpFieldBtnContainer}>
-        <TouchableOpacity onPress={callSignIn} style={styles.signInBtn}>
+        <TouchableOpacity onPress={forwardState} style={styles.signInBtn}>
           <Text>Create Account</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={forwardState} onPress={callSignIn} style={styles.skipBtn}>
-          <Text>Skip this step</Text>
         </TouchableOpacity>
       </View>
     </React.Fragment>
@@ -39,8 +57,8 @@ export default Step2;
 
 const styles = StyleSheet.create({
   signUpContainer: {
-    borderColor: '#eeee',
-    borderStyle: 'solid',
+    borderColor: "#eeee",
+    borderStyle: "solid",
     borderWidth: 1,
     padding: 30,
   },
@@ -54,18 +72,18 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   signUpFieldTextContainer: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     marginTop: 15,
   },
   signUpFieldBtnContainer: {
-    display: 'flex',
+    display: "flex",
     marginTop: 15,
-    flexDirection: 'row-reverse',
+    flexDirection: "row-reverse",
   },
   signInBtn: {
-    borderColor: '#eeee',
-    borderStyle: 'solid',
+    borderColor: "#eeee",
+    borderStyle: "solid",
     borderWidth: 1,
     paddingTop: 10,
     paddingBottom: 10,
@@ -84,5 +102,13 @@ const styles = StyleSheet.create({
   },
   signUpFieldText: {
     fontSize: 15,
+  },
+  inputField: {
+    flex: 1,
+    borderWidth: 0.5,
+    borderTopColor: "transparent",
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "#cccc",
   },
 });

@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, { useState, Component } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,9 +10,9 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
 
-function Step3({name}) {
+function Step3({ name }) {
   return (
     <React.Fragment>
       <Text style={styles.signUpTitleText}>Account Created {name}!</Text>
@@ -29,8 +29,8 @@ export default Step3;
 
 const styles = StyleSheet.create({
   signUpContainer: {
-    borderColor: '#eeee',
-    borderStyle: 'solid',
+    borderColor: "#eeee",
+    borderStyle: "solid",
     borderWidth: 1,
     padding: 30,
   },
@@ -44,18 +44,18 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   signUpFieldTextContainer: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     marginTop: 15,
   },
   signUpFieldBtnContainer: {
-    display: 'flex',
+    display: "flex",
     marginTop: 15,
-    flexDirection: 'row-reverse',
+    flexDirection: "row-reverse",
   },
   signInBtn: {
-    borderColor: '#eeee',
-    borderStyle: 'solid',
+    borderColor: "#eeee",
+    borderStyle: "solid",
     borderWidth: 1,
     paddingTop: 10,
     paddingBottom: 10,
@@ -74,5 +74,13 @@ const styles = StyleSheet.create({
   },
   signUpFieldText: {
     fontSize: 15,
+  },
+  inputField: {
+    flex: 1,
+    borderWidth: 0.5,
+    borderTopColor: "transparent",
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "#cccc",
   },
 });

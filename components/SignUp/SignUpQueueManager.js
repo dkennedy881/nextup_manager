@@ -13,6 +13,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import Axios from "axios";
 
 //comps
 import Step1 from "./Steps/Step1";
@@ -25,6 +26,7 @@ class SignUpQueueManager extends Component {
       step: 1,
       phoneNumber: "",
       name: "",
+      address: "",
       zipCode: "",
       password: "",
       passwordValidate: "",
@@ -39,6 +41,10 @@ class SignUpQueueManager extends Component {
     this.setState({ name });
   };
 
+  updateAddress = (address) => {
+    this.setState({ address });
+  };
+
   updatePassword = (password) => {
     this.setState({ password });
   };
@@ -51,26 +57,107 @@ class SignUpQueueManager extends Component {
     this.setState({ zipCode });
   };
 
-  validatePhoneNumber = () => {};
-
   callSignIn = () => {
     let { phoneNumber, name, password } = this.state;
     this.props.signUp(this.props.queueMember, phoneNumber, name, password);
   };
 
-  forwardState = () => {
-    this.setState({ step: this.state.step + 1 });
+  forwardState = async () => {
+    const { step, phoneNumber, name, address, zipCode, password } = this.state;
+
+    if (step === 1) {
+      if (!this.allFilled1()) {
+        alert("All fields must be filled out");
+        return;
+      }
+      if (!this.matchingPasswords()) {
+        alert("Passwords must match");
+        return;
+      }
+    }
+
+    // check if use already exists
+    let { data } = await Axios.post(
+      "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/checkNewQueueManager/incoming_webhook/webhook0",
+      {
+        phoneNumber: String(phoneNumber),
+        password: String(password),
+      }
+    );
+    if (data) {
+      alert(
+        `An account with the provided phone number already exists - ${phoneNumber}`
+      );
+      return;
+    }
+
+    if (step === 2) {
+      if (!this.allFilled2()) {
+        alert("All fields must be filled out");
+        return;
+      } else {
+        this.props.signUp(
+          this.props.queueMember,
+          phoneNumber,
+          name,
+          password,
+          address,
+          zipCode
+        );
+      }
+      return;
+    }
+    this.setState({ step: step + 1 });
   };
 
   backState = () => {
     this.setState({ step: this.state - 1 });
   };
 
+  allFilled2 = () => {
+    const {
+      phoneNumber,
+      name,
+      password,
+      passwordValidate,
+      step,
+      ...rest
+    } = this.state;
+    for (let key in rest) {
+      if (!rest[key]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  allFilled1 = () => {
+    const { zipCode, step, address, ...rest } = this.state;
+    // console.log(rest);
+    for (let key in rest) {
+      if (!rest[key]) return false;
+    }
+    return true;
+  };
+
+  matchingPasswords() {
+    const { password, passwordValidate } = this.state;
+
+    //any spaces
+    if (/.*\s{1,}/.test(password) || /.*\s{1,}/.test(passwordValidate))
+      return false;
+
+    if (!password.length || !passwordValidate.length) return false;
+
+    return password === passwordValidate;
+  }
+
   render() {
     let {
       step,
       name,
       phoneNumber,
+      address,
       zipCode,
       password,
       passwordValidate,
@@ -80,6 +167,7 @@ class SignUpQueueManager extends Component {
       callSignIn,
       updateName,
       updatePhoneNumber,
+      updateAddress,
       updateZip,
       updatePassword,
       updatePasswordValidate,
@@ -111,6 +199,8 @@ class SignUpQueueManager extends Component {
             callSignIn={callSignIn}
             zipCode={zipCode}
             updateZip={updateZip}
+            address={address}
+            updateAddress={updateAddress}
           />
         );
       default:

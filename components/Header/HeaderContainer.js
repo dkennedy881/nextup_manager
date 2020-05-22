@@ -15,12 +15,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-function HeaderContainer({
-  queueMember,
-  queueData,
-  toggleSettings,
-  toggleLogIn,
-}) {
+function HeaderContainer({ queueMember, toggleSettings, toggleLogIn }) {
   const [showSettings, setShowSettings] = useState(false);
 
   function doToggleSettings() {
@@ -50,14 +45,39 @@ function HeaderContainer({
     return (
       <View elevation={5} style={styles.HeaderContainer}>
         <View style={styles.HeaderItems}>
+          <TouchableOpacity
+            style={styles.HeaderItemSM}
+            onPress={() => toggleLogIn()}
+          >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                top: 10,
+                left: 10,
+              }}
+            >
+              <Icon
+                name={"power-off"}
+                type="font-awesome"
+                color="#6da8bd"
+                size={30}
+              />
+            </View>
+          </TouchableOpacity>
+          <View style={styles.TitleContainer}>
+            <Image
+              style={{ width: 150, height: 40 }}
+              source={require("../../images/next-up_text-color.jpeg")}
+            />
+          </View>
           <TouchableOpacity style={styles.HeaderItemSM}>
-            <View style={{ left: -5, top: 16 }}>
+            <View style={{ left: 25, top: 12 }}>
               <Icon
                 name={showSettings ? "home" : "gear"}
                 type="font-awesome"
                 color="#6da8bd"
                 size={30}
-                // onPress={() => console.log("hello")}
                 onPress={() => doToggleSettings()}
               />
             </View>
@@ -65,20 +85,6 @@ function HeaderContainer({
             {/* <Text style={styles.SettingsBtnText}>
               {showSettings ? "Home" : "Settings"}
             </Text> */}
-          </TouchableOpacity>
-          <View style={styles.TitleContainer}>
-            <Text style={styles.TitleText}>
-              {queueData ? queueData.title : "....."}
-            </Text>
-          </View>
-          <TouchableOpacity
-            style={styles.HeaderItemSM}
-            onPress={() => toggleLogIn()}
-          >
-            <Image
-              style={{ width: 40, height: 40, left: 40, top: 10 }}
-              source={require("../../images/next-up_icon-color.jpeg")}
-            />
           </TouchableOpacity>
         </View>
       </View>
