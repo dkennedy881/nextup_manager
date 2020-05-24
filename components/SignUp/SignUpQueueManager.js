@@ -86,7 +86,7 @@ class SignUpQueueManager extends Component {
     );
     if (data) {
       alert(
-        `An account with the provided phone number already exists - ${phoneNumber}`
+        `An account with the provided phone number already exists = ${phoneNumber}`
       );
       return;
     }
