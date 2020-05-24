@@ -2,7 +2,11 @@
   "expo": {
     "name": "nextup_manager",
     "slug": "nextup_manager",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,10 +18,14 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "nextup"
-    }
+    },
+    "description": "Build for the first testing suit.",
+    "githubUrl": "https://github.com/dkennedy881/nextup_manager"
   }
 }

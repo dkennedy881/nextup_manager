@@ -14,6 +14,7 @@ import {
 
 function Step2({
   forwardState,
+  backState,
   callSignIn,
   updateZip,
   zipCode,
@@ -45,9 +46,16 @@ function Step2({
         />
       </View>
       <View style={styles.signUpFieldBtnContainer}>
-        <TouchableOpacity onPress={forwardState} style={styles.signInBtn}>
-          <Text>Create Account</Text>
-        </TouchableOpacity>
+        <View style={styles.signUpFieldBtnContainer}>
+          <TouchableOpacity onPress={forwardState} style={styles.signInBtn}>
+            <Text>Create Account</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.signUpFieldBtnContainer}>
+          <TouchableOpacity onPress={backState} style={styles.skipBtn}>
+            <Text>Back</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </React.Fragment>
   );
