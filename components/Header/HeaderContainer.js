@@ -71,14 +71,16 @@ function HeaderContainer({ queueMember, toggleSettings, toggleLogIn }) {
               source={require("../../images/next-up_text-color.jpeg")}
             />
           </View>
-          <TouchableOpacity style={styles.HeaderItemSM}>
+          <TouchableOpacity
+            style={styles.HeaderItemSM}
+            onPress={() => doToggleSettings()}
+          >
             <View style={{ left: 25, top: 12 }}>
               <Icon
                 name={showSettings ? "home" : "gear"}
                 type="font-awesome"
                 color="#6da8bd"
                 size={30}
-                onPress={() => doToggleSettings()}
               />
             </View>
 

@@ -34,32 +34,43 @@ class SignUpContainer extends Component {
     zipCode
   ) => {
     if (type) {
-      // alert(`Phone Number - ${phoneNumber} Name - ${name} Zip - ${zipCode}`);
     } else {
-      let { data: userObj } = await Axios.post(
-        "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/addQueueManager/incoming_webhook/webhook0",
-        {
-          phoneNumber: phoneNumber,
-          password: password,
-        }
-      );
-
+      let userObj = {};
+      //create user
+      try {
+        let { data } = await Axios.post(
+          "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/addQueueManager/incoming_webhook/webhook0",
+          {
+            phoneNumber: phoneNumber,
+            password: password,
+          }
+        );
+        userObj = { ...data };
+      } catch (e) {
+        alert("Server Error");
+        return;
+      }
       let userId = userObj.id["$numberLong"];
-      let { data: queueData } = await Axios.post(
-        "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/addQueue/incoming_webhook/webhook0",
-        {
-          businessName: businessName,
-          id: userId,
-          address: address,
-          zipCode: zipCode,
-        }
-      );
+      //create queue
+      try {
+        await Axios.post(
+          "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/addQueue/incoming_webhook/webhook0",
+          {
+            businessName: businessName,
+            id: userId,
+            address: address,
+            zipCode: zipCode,
+          }
+        );
+      } catch (e) {
+        alert("Server Error");
+        return;
+      }
 
-      // alert(JSON.stringify(queueData));
+      //sign user in
       this.props.toggleLogIn(phoneNumber, password);
       return;
     }
-    // this.props.toggleLogIn();
   };
 
   render() {

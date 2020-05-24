@@ -111,7 +111,8 @@ class SignUpQueueManager extends Component {
   };
 
   backState = () => {
-    this.setState({ step: this.state - 1 });
+    let { step } = this.state;
+    step > 1 ? this.setState({ step: step - 1 }) : null;
   };
 
   allFilled2 = () => {
@@ -164,6 +165,7 @@ class SignUpQueueManager extends Component {
     } = this.state;
     let {
       forwardState,
+      backState,
       callSignIn,
       updateName,
       updatePhoneNumber,
@@ -194,6 +196,7 @@ class SignUpQueueManager extends Component {
       case 2:
         return (
           <Step2
+            backState={backState}
             queueMember={queueMember}
             forwardState={forwardState}
             callSignIn={callSignIn}
