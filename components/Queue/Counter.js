@@ -22,6 +22,7 @@ class Counter extends Component {
     super(props);
     this.state = {
       count: 0,
+      setCounter: 0,
       isSet: false,
     };
   }
@@ -54,31 +55,57 @@ class Counter extends Component {
       this.setState((state) => ({
         ...state,
         count,
+        setCounter: count,
         isSet: !state.isSet,
       }));
     }
   }
 
-  render() {
+  updateSetCount = () => {
     let { count } = this.state;
-    let { updateTextInput } = this;
+
     let { updateQueueCount } = this.props;
+    this.setState((state) => ({
+      ...state,
+      setCounter: count,
+    }));
+
+    updateQueueCount(count);
+  };
+
+  render() {
+    let { count, setCounter } = this.state;
+    let { updateTextInput, updateSetCount } = this;
     return (
       <View
         colors={["#317791", "#317791", "#FFFFFF"]}
         style={styles.CountContainer}
       >
-        <View style={styles.countTextContainer}>
-          <TextInput
-            keyboardType={"numeric"}
-            style={styles.countText}
-            onChangeText={(count) => {
-              updateTextInput(count);
-            }}
-          >
-            {count}
-          </TextInput>
-        </View>
+        {count === setCounter ? (
+          <View style={styles.countTextContainer}>
+            <TextInput
+              keyboardType={"numeric"}
+              style={styles.countText}
+              onChangeText={(count) => {
+                updateTextInput(count);
+              }}
+            >
+              {count}
+            </TextInput>
+          </View>
+        ) : (
+          <View style={styles.countTextContainer2}>
+            <TextInput
+              keyboardType={"numeric"}
+              style={styles.countText}
+              onChangeText={(count) => {
+                updateTextInput(count);
+              }}
+            >
+              {count}
+            </TextInput>
+          </View>
+        )}
         <View style={styles.CounterBtnContainer}>
           <TouchableOpacity style={styles.countBtnL} onPress={this.decrement}>
             <Text style={styles.countBtnText}>-</Text>
@@ -86,7 +113,7 @@ class Counter extends Component {
           <TouchableOpacity
             style={styles.countBtnCenter}
             onPress={() => {
-              updateQueueCount(count);
+              updateSetCount();
             }}
           >
             <Text style={styles.countBtnCenterText}>update</Text>
@@ -122,6 +149,13 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingBottom: 50,
     backgroundColor: "#6da8bd",
+    borderTopRightRadius: 9,
+    borderTopLeftRadius: 9,
+  },
+  countTextContainer2: {
+    paddingTop: 50,
+    paddingBottom: 50,
+    backgroundColor: "red",
     borderTopRightRadius: 9,
     borderTopLeftRadius: 9,
   },
