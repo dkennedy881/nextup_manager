@@ -55,6 +55,7 @@ export default class App extends Component {
         isLoggedIn: !isLoggedIn,
       }));
 
+      // TODO add username
       try {
         queueData = await this.getQueueData(userObj.id["$numberLong"]);
         let newJSON = {
@@ -83,6 +84,7 @@ export default class App extends Component {
     }
   };
 
+  // TODO use username instead of phonenumber
   logIn = (phoneNumber, password) => {
     return new Promise(async (res, rej) => {
       try {
@@ -125,6 +127,7 @@ export default class App extends Component {
     });
   };
 
+  // TODO add phonenumber
   updateUserQueue = ({
     title,
     message,
@@ -136,6 +139,7 @@ export default class App extends Component {
     zipCode,
   }) => {
     return new Promise(async (res, rej) => {
+      // TODO add phonenumber
       try {
         let { data: queueData } = await Axios.post(
           "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/updateUserQueue/incoming_webhook/webhook0",

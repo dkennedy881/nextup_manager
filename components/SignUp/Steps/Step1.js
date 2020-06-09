@@ -18,53 +18,53 @@ import {
 function Step1({
   forwardState,
   toggleLogInSignUp,
-  updatePhoneNumber,
-  phoneNumber,
   updateName,
   name,
   password,
   passwordValidate,
   updatePassword,
   updatePasswordValidate,
+  username,
+  updateUsername,
 }) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View>
         <Text style={styles.signUpTitleText}>Sign Up</Text>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Business Name: </Text>
+          <Text style={styles.signUpFieldText}>Business Name</Text>
           <TextInput
             value={name}
             style={styles.inputField}
             onChangeText={(text) => updateName(text)}
-            placeholder="Awesome Business"
+            placeholder=""
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Phone Number: </Text>
+          <Text style={styles.signUpFieldText}>User Name</Text>
           <TextInput
-            value={phoneNumber}
+            value={username}
             style={styles.inputField}
-            onChangeText={(text) => updatePhoneNumber(text)}
-            placeholder="Phone Number"
+            onChangeText={(text) => updateUsername(text)}
+            placeholder=""
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Password: </Text>
+          <Text style={styles.signUpFieldText}>Password</Text>
           <TextInput
             value={password}
             style={styles.inputField}
             onChangeText={(text) => updatePassword(text)}
-            placeholder="Account Password"
+            placeholder=""
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Re-enter Password: </Text>
+          <Text style={styles.signUpFieldText}>Re-enter Password</Text>
           <TextInput
             value={passwordValidate}
             style={styles.inputField}
             onChangeText={(text) => updatePasswordValidate(text)}
-            placeholder="Re-enter Account Password"
+            placeholder=""
           />
         </View>
         <View style={styles.signUpFieldBtnContainer}>
@@ -89,9 +89,6 @@ export default Step1;
 
 const styles = StyleSheet.create({
   signUpContainer: {
-    borderColor: "#eeee",
-    borderStyle: "solid",
-    borderWidth: 1,
     padding: 30,
   },
   signUpSimpleText: {
@@ -134,6 +131,7 @@ const styles = StyleSheet.create({
   },
   signUpFieldText: {
     fontSize: 15,
+    marginRight: 10,
   },
   inputField: {
     flex: 1,

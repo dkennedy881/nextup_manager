@@ -44,7 +44,8 @@ class ManageQueue extends Component {
   updateQueueMeta = async (queueData) => {
     let { updateUserQueue } = this.props;
     //update the app.js state
-    updateUserQueue(queueData);
+    await updateUserQueue(queueData);
+    return;
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -79,6 +80,7 @@ class ManageQueue extends Component {
         return (
           <ScrollView>
             <View style={styles.ManageQueueContainer}>
+              <Text style={styles.titleText}>{queueData.title}</Text>
               <Counter
                 count={queueData.count}
                 updateQueueCount={updateQueueCount}
@@ -106,9 +108,15 @@ export default ManageQueue;
 
 const styles = StyleSheet.create({
   ManageQueueContainer: {
-    height: "100%",
-    marginTop: 80,
+    height: "150%",
+    paddingTop: 50,
     alignItems: "center",
+  },
+  titleText: {
+    fontWeight: "200",
+    marginBottom: 10,
+    fontSize: 35,
+    color: "#121212",
   },
 });
 

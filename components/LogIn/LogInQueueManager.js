@@ -21,18 +21,18 @@ function LogInQueueManager({ logIn, toggleLogInSignUp }) {
     <View style={styles.logInContainer}>
       <Text style={styles.logInTitleText}>Log In</Text>
       <View style={styles.logInFieldTextContainer}>
-        <Text style={styles.logInFieldText}>Phone Number: </Text>
+        <Text style={styles.logInFieldText}>User Name</Text>
         <TextInput
           style={styles.inputField}
-          placeholder="Business Phone Number"
+          placeholder=""
           onChangeText={(value) => setPhoneNumber(value)}
         />
       </View>
       <View style={styles.logInFieldTextContainer}>
-        <Text style={styles.logInFieldText}>Password: </Text>
+        <Text style={styles.logInFieldText}>Password</Text>
         <TextInput
           style={styles.inputField}
-          placeholder="Password"
+          placeholder=""
           onChangeText={(value) => setPassword(value)}
         />
       </View>
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
   },
   logInFieldText: {
     fontSize: 15,
+    marginRight: 10,
   },
   inputField: {
     flex: 1,

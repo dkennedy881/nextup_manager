@@ -20,20 +20,31 @@ function Step2({
   zipCode,
   updateAddress,
   address,
+  updatePhoneNumber,
+  phoneNumber,
 }) {
   return (
-    <React.Fragment>
+    <View style={styles.signUpContainer}>
       <Text style={styles.signUpTitleText}>Verified!</Text>
       <Text style={styles.signUpSimpleText}>
-        Please Enter your Address and ZIP Code.
+        Please enter additional business information. All fields are required.
       </Text>
+      <View style={styles.signUpFieldTextContainer}>
+        <Text style={styles.signUpFieldText}>Phone Number</Text>
+        <TextInput
+          style={styles.inputField}
+          onChangeText={(text) => updatePhoneNumber(text)}
+          value={phoneNumber}
+          placeholder=""
+        />
+      </View>
       <View style={styles.signUpFieldTextContainer}>
         <Text style={styles.signUpFieldText}>Address: </Text>
         <TextInput
           style={styles.inputField}
           onChangeText={(text) => updateAddress(text)}
           value={address}
-          placeholder="1234 Some Street"
+          placeholder=""
         />
       </View>
       <View style={styles.signUpFieldTextContainer}>
@@ -42,7 +53,7 @@ function Step2({
           style={styles.inputField}
           onChangeText={(text) => updateZip(text)}
           value={zipCode}
-          placeholder="78748"
+          placeholder=""
         />
       </View>
       <View style={styles.signUpFieldBtnContainer}>
@@ -57,7 +68,7 @@ function Step2({
           </TouchableOpacity>
         </View>
       </View>
-    </React.Fragment>
+    </View>
   );
 }
 
@@ -65,10 +76,10 @@ export default Step2;
 
 const styles = StyleSheet.create({
   signUpContainer: {
-    borderColor: "#eeee",
-    borderStyle: "solid",
-    borderWidth: 1,
-    padding: 30,
+    // borderColor: "#eeee",
+    // borderStyle: "solid",
+    // borderWidth: 1,
+    // margin: -10,
   },
   signUpSimpleText: {
     marginTop: 15,
@@ -110,6 +121,7 @@ const styles = StyleSheet.create({
   },
   signUpFieldText: {
     fontSize: 15,
+    marginRight: 10,
   },
   inputField: {
     flex: 1,

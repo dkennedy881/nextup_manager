@@ -24,6 +24,7 @@ class SignUpQueueManager extends Component {
     super(props);
     this.state = {
       step: 1,
+      username: "",
       phoneNumber: "",
       name: "",
       address: "",
@@ -32,6 +33,10 @@ class SignUpQueueManager extends Component {
       passwordValidate: "",
     };
   }
+
+  updateUsername = (username) => {
+    this.setState({ username });
+  };
 
   updatePhoneNumber = (phoneNumber) => {
     this.setState({ phoneNumber });
@@ -63,7 +68,15 @@ class SignUpQueueManager extends Component {
   };
 
   forwardState = async () => {
-    const { step, phoneNumber, name, address, zipCode, password } = this.state;
+    const {
+      step,
+      phoneNumber,
+      name,
+      address,
+      zipCode,
+      password,
+      username,
+    } = this.state;
 
     if (step === 1) {
       if (!this.allFilled1()) {
@@ -74,8 +87,13 @@ class SignUpQueueManager extends Component {
         alert("Passwords must match");
         return;
       }
+      if (!this.validUsername()) {
+        alert("Username cannot have spaces");
+        return;
+      }
     }
-
+    // TODO changed phoneNumber to username
+    // TODO change api
     // check if use already exists
     let { data } = await Axios.post(
       "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/checkNewQueueManager/incoming_webhook/webhook0",
@@ -102,7 +120,8 @@ class SignUpQueueManager extends Component {
           name,
           password,
           address,
-          zipCode
+          zipCode,
+          username
         );
       }
       return;
@@ -119,7 +138,7 @@ class SignUpQueueManager extends Component {
     const {
       phoneNumber,
       name,
-      password,
+      username,
       passwordValidate,
       step,
       ...rest
@@ -132,8 +151,15 @@ class SignUpQueueManager extends Component {
     return true;
   };
 
+  validUsername = () => {
+    const { username } = this.state;
+    if (/.*\s{1,}/.test(username)) return false;
+
+    return true;
+  };
+
   allFilled1 = () => {
-    const { zipCode, step, address, ...rest } = this.state;
+    const { zipCode, step, address, phoneNumber, ...rest } = this.state;
     // console.log(rest);
     for (let key in rest) {
       if (!rest[key]) return false;
@@ -162,6 +188,7 @@ class SignUpQueueManager extends Component {
       zipCode,
       password,
       passwordValidate,
+      username,
     } = this.state;
     let {
       forwardState,
@@ -173,6 +200,7 @@ class SignUpQueueManager extends Component {
       updateZip,
       updatePassword,
       updatePasswordValidate,
+      updateUsername,
     } = this;
     let { toggleLogInSignUp, queueMember } = this.props;
 
@@ -189,8 +217,8 @@ class SignUpQueueManager extends Component {
             passwordValidate={passwordValidate}
             updatePassword={updatePassword}
             updatePasswordValidate={updatePasswordValidate}
-            updatePhoneNumber={updatePhoneNumber}
-            phoneNumber={phoneNumber}
+            username={username}
+            updateUsername={updateUsername}
           />
         );
       case 2:
@@ -203,6 +231,10 @@ class SignUpQueueManager extends Component {
             zipCode={zipCode}
             updateZip={updateZip}
             address={address}
+            username={username}
+            updatePhoneNumber={updatePhoneNumber}
+            phoneNumber={phoneNumber}
+            updateUsername={updateUsername}
             updateAddress={updateAddress}
           />
         );

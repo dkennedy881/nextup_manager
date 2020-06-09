@@ -28,7 +28,7 @@ class Counter extends Component {
   }
 
   increment = () => {
-    let { count } = this.state;
+    let { count, setCounter } = this.state;
     count = parseInt(count) + 1;
     this.setState({ count: parseInt(count) });
     Keyboard.dismiss();
@@ -81,7 +81,7 @@ class Counter extends Component {
         colors={["#317791", "#317791", "#FFFFFF"]}
         style={styles.CountContainer}
       >
-        {count === setCounter ? (
+        {parseInt(count) === parseInt(setCounter) ? (
           <View style={styles.countTextContainer}>
             <TextInput
               keyboardType={"numeric"}

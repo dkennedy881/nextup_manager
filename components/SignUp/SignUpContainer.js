@@ -31,12 +31,14 @@ class SignUpContainer extends Component {
     businessName,
     password,
     address,
-    zipCode
+    zipCode,
+    username
   ) => {
     if (type) {
     } else {
       let userObj = {};
       //create user
+      // TODO add user username to create account
       try {
         let { data } = await Axios.post(
           "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/addQueueManager/incoming_webhook/webhook0",
@@ -52,6 +54,7 @@ class SignUpContainer extends Component {
       }
       let userId = userObj.id["$numberLong"];
       //create queue
+      // TODO add phonenumber to creating queue
       try {
         await Axios.post(
           "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/addQueue/incoming_webhook/webhook0",
@@ -116,6 +119,7 @@ const styles = StyleSheet.create({
     borderColor: "#eeee",
     borderStyle: "solid",
     borderWidth: 1,
+    borderRadius: 9,
     padding: 30,
     alignSelf: "stretch",
     overflow: "hidden",

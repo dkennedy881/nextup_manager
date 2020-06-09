@@ -31,9 +31,11 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
   const [active, setactive] = useState(queueData.active);
   const [address, setAddress] = useState(queueData.address);
   const [zipCode, setZipCode] = useState(queueData.zipCode);
+  const [showSaving, setShowSaving] = useState(false);
 
-  function update() {
-    updateQueueMeta({
+  async function update() {
+    setShowSaving(true);
+    await updateQueueMeta({
       id,
       title,
       message,
@@ -46,6 +48,9 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
       address,
       zipCode,
     });
+    setTimeout(() => {
+      setShowSaving(false);
+    }, 1500);
   }
 
   if (editing) {
@@ -73,12 +78,21 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                 ></TextInput>
               </View>
               <View style={styles.ButtonRow}>
-                <TouchableOpacity
-                  style={styles.SaveButton}
-                  onPress={() => update()}
-                >
-                  <Text style={styles.SaveButtonText}>Update</Text>
-                </TouchableOpacity>
+                {!showSaving ? (
+                  <TouchableOpacity
+                    style={styles.SaveButton}
+                    onPress={() => update()}
+                  >
+                    <Text style={styles.SaveButtonText}>Update</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.SaveButton2}
+                    onPress={() => update()}
+                  >
+                    <Text style={styles.SaveButtonText}>Updated!</Text>
+                  </TouchableOpacity>
+                )}
               </View>
               <View
                 style={{
@@ -132,12 +146,23 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
               </View>
 
               <View style={styles.ButtonRow}>
-                <TouchableOpacity
-                  style={styles.SaveButton}
-                  onPress={() => update()}
-                >
-                  <Text style={styles.SaveButtonText}>Update</Text>
-                </TouchableOpacity>
+                <View style={styles.ButtonRow}>
+                  {!showSaving ? (
+                    <TouchableOpacity
+                      style={styles.SaveButton}
+                      onPress={() => update()}
+                    >
+                      <Text style={styles.SaveButtonText}>Update</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      style={styles.SaveButton2}
+                      onPress={() => update()}
+                    >
+                      <Text style={styles.SaveButtonText}>Updated!</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -148,11 +173,11 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
     return (
       <View style={styles.MetaContainer}>
         <View style={styles.MetaRow}>
-          <Text style={styles.MetaTitleText}>{queueData.title}</Text>
+          <Text style={styles.MetaTitleText}>Business Message</Text>
           <Text style={styles.MetaData}>{queueData.message}</Text>
         </View>
         <View style={styles.MetaRow}>
-          <Text style={styles.MetaTitleText}>Hours</Text>
+          <Text style={styles.MetaTitleText}>Hours of operation</Text>
           <Text style={styles.MetaDataText}>
             {queueData.hours.open} - {queueData.hours.close}
           </Text>
@@ -188,6 +213,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 9,
   },
+  SaveButton2: {
+    backgroundColor: "lightblue",
+    color: "black",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 9,
+  },
   SaveButtonText: {
     fontWeight: "700",
   },
@@ -195,6 +227,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginTop: 1,
     marginBottom: 1,
+    color: "#111111",
   },
   MetaTitleTextSM: {
     fontWeight: "300",
