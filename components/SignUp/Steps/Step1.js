@@ -41,7 +41,7 @@ function Step1({
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>User Name</Text>
+          <Text style={styles.signUpFieldText}>Email</Text>
           <TextInput
             value={username}
             style={styles.inputField}

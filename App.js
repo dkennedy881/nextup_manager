@@ -25,11 +25,32 @@ export default class App extends Component {
     showSettings: false,
   };
 
+  resetPassword = (username) => {
+    return new Promise(async (res, rej) => {
+      try {
+        let { data } = await Axios.post(
+          "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/sendNewPassword/incoming_webhook/webhook0",
+          {
+            username: String(username).toLocaleLowerCase(),
+          }
+        );
+        if (data) {
+          res(data);
+        } else {
+          alert("User Not Found");
+        }
+      } catch (e) {
+        // alert(e);
+        alert("System Error");
+      }
+    });
+  };
+
   toggleSettings = () => {
     this.setState({ showSettings: !this.state.showSettings });
   };
 
-  toggleLogIn = async (phoneNumber, password) => {
+  toggleLogIn = async (username, password) => {
     let { isLoggedIn, userObj, queueData } = this.state;
 
     if (isLoggedIn) {
@@ -44,7 +65,7 @@ export default class App extends Component {
     } else {
       //1. use params for log in
       try {
-        userObj = await this.logIn(phoneNumber, password);
+        userObj = await this.logIn(username, password);
       } catch (e) {
         alert(e);
         return;
@@ -70,6 +91,12 @@ export default class App extends Component {
           id: queueData.id["$numberLong"],
           address: queueData.address,
           zipCode: queueData.zipCode,
+          city: queueData.city,
+          state: queueData.state,
+          mask: queueData.mask,
+          sani: queueData.sani,
+          maxCount: queueData.maxCount,
+          businessNumber: queueData.businessNumber,
         };
         queueData = newJSON;
       } catch (e) {
@@ -85,13 +112,13 @@ export default class App extends Component {
   };
 
   // TODO use username instead of phonenumber
-  logIn = (phoneNumber, password) => {
+  logIn = (username, password) => {
     return new Promise(async (res, rej) => {
       try {
         let { data } = await Axios.post(
           "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/logInQueueManager/incoming_webhook/webhook0",
           {
-            phoneNumber: String(phoneNumber),
+            username: String(username).toLocaleLowerCase(),
             password: String(password),
           }
         );
@@ -137,6 +164,12 @@ export default class App extends Component {
     id,
     address,
     zipCode,
+    city,
+    state,
+    mask,
+    sani,
+    maxCount,
+    businessNumber,
   }) => {
     return new Promise(async (res, rej) => {
       // TODO add phonenumber
@@ -153,6 +186,12 @@ export default class App extends Component {
             id: parseInt(id),
             address: address,
             zipCode: zipCode,
+            city: city,
+            state: state,
+            mask: mask,
+            sani: sani,
+            maxCount: parseInt(maxCount),
+            businessNumber: businessNumber,
           }
         );
         let newJSON = {
@@ -167,6 +206,12 @@ export default class App extends Component {
           id: queueData.id["$numberLong"],
           address: queueData.address,
           zipCode: queueData.zipCode,
+          city: city,
+          state: state,
+          mask: mask,
+          sani: sani,
+          maxCount: maxCount,
+          businessNumber: businessNumber,
         };
         queueData = newJSON;
 
@@ -197,6 +242,7 @@ export default class App extends Component {
       toggleLogInSignUp,
       toggleSettings,
       updateUserQueue,
+      resetPassword,
     } = this;
 
     if (isLoggedIn)
@@ -223,13 +269,19 @@ export default class App extends Component {
             isSignedUp={isSignedUp}
             toggleLogIn={toggleLogIn}
             toggleLogInSignUp={toggleLogInSignUp}
+            resetPassword={resetPassword}
           ></DisplayLogInSignUp>
         </TouchableWithoutFeedback>
       );
   }
 }
 
-function DisplayLogInSignUp({ isSignedUp, toggleLogIn, toggleLogInSignUp }) {
+function DisplayLogInSignUp({
+  isSignedUp,
+  toggleLogIn,
+  toggleLogInSignUp,
+  resetPassword,
+}) {
   return (
     <View style={styles.loginSignUpContainer}>
       <View
@@ -253,6 +305,7 @@ function DisplayLogInSignUp({ isSignedUp, toggleLogIn, toggleLogInSignUp }) {
           queueMember={false}
           toggleLogIn={toggleLogIn}
           toggleLogInSignUp={toggleLogInSignUp}
+          resetPassword={resetPassword}
         />
       ) : (
         <SignUpContainer

@@ -15,6 +15,8 @@ import {
 } from "react-native";
 import Axios from "axios";
 
+import States from "./Steps/Utils";
+
 //comps
 import Step1 from "./Steps/Step1";
 import Step2 from "./Steps/Step2";
@@ -31,6 +33,8 @@ class SignUpQueueManager extends Component {
       zipCode: "",
       password: "",
       passwordValidate: "",
+      state: "",
+      city: "",
     };
   }
 
@@ -62,6 +66,14 @@ class SignUpQueueManager extends Component {
     this.setState({ zipCode });
   };
 
+  updateState = (state) => {
+    this.setState({ state });
+  };
+
+  updateCity = (city) => {
+    this.setState({ city });
+  };
+
   callSignIn = () => {
     let { phoneNumber, name, password } = this.state;
     this.props.signUp(this.props.queueMember, phoneNumber, name, password);
@@ -76,19 +88,21 @@ class SignUpQueueManager extends Component {
       zipCode,
       password,
       username,
+      city,
+      state,
     } = this.state;
-
     if (step === 1) {
       if (!this.allFilled1()) {
         alert("All fields must be filled out");
         return;
       }
+
       if (!this.matchingPasswords()) {
         alert("Passwords must match");
         return;
       }
       if (!this.validUsername()) {
-        alert("Username cannot have spaces");
+        alert("Please enter a valid email address");
         return;
       }
     }
@@ -98,13 +112,13 @@ class SignUpQueueManager extends Component {
     let { data } = await Axios.post(
       "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/checkNewQueueManager/incoming_webhook/webhook0",
       {
-        phoneNumber: String(phoneNumber),
+        username: String(username),
         password: String(password),
       }
     );
     if (data) {
       alert(
-        `An account with the provided phone number already exists = ${phoneNumber}`
+        `An account with the provided email address already exists = ${username}`
       );
       return;
     }
@@ -121,7 +135,9 @@ class SignUpQueueManager extends Component {
           password,
           address,
           zipCode,
-          username
+          username,
+          city,
+          state
         );
       }
       return;
@@ -153,13 +169,26 @@ class SignUpQueueManager extends Component {
 
   validUsername = () => {
     const { username } = this.state;
-    if (/.*\s{1,}/.test(username)) return false;
+    if (
+      !/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(
+        username
+      )
+    )
+      return false;
 
     return true;
   };
 
   allFilled1 = () => {
-    const { zipCode, step, address, phoneNumber, ...rest } = this.state;
+    const {
+      zipCode,
+      step,
+      address,
+      phoneNumber,
+      state,
+      city,
+      ...rest
+    } = this.state;
     // console.log(rest);
     for (let key in rest) {
       if (!rest[key]) return false;
@@ -189,6 +218,8 @@ class SignUpQueueManager extends Component {
       password,
       passwordValidate,
       username,
+      city,
+      state,
     } = this.state;
     let {
       forwardState,
@@ -201,6 +232,8 @@ class SignUpQueueManager extends Component {
       updatePassword,
       updatePasswordValidate,
       updateUsername,
+      updateCity,
+      updateState,
     } = this;
     let { toggleLogInSignUp, queueMember } = this.props;
 
@@ -236,6 +269,10 @@ class SignUpQueueManager extends Component {
             phoneNumber={phoneNumber}
             updateUsername={updateUsername}
             updateAddress={updateAddress}
+            updateCity={updateCity}
+            updateState={updateState}
+            city={city}
+            state={state}
           />
         );
       default:

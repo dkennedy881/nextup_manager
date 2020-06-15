@@ -22,7 +22,7 @@ import SignUpQueueManager from "./SignUpQueueManager";
 class SignUpContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { signingUp: false };
   }
 
   signUp = async (
@@ -32,11 +32,14 @@ class SignUpContainer extends Component {
     password,
     address,
     zipCode,
-    username
+    username,
+    city,
+    state
   ) => {
     if (type) {
     } else {
       let userObj = {};
+      this.setState({ signingUp: true });
       //create user
       // TODO add user username to create account
       try {
@@ -45,6 +48,7 @@ class SignUpContainer extends Component {
           {
             phoneNumber: phoneNumber,
             password: password,
+            username: username.toLocaleLowerCase(),
           }
         );
         userObj = { ...data };
@@ -63,15 +67,22 @@ class SignUpContainer extends Component {
             id: userId,
             address: address,
             zipCode: zipCode,
+            city: city,
+            state: state,
+            businessNumber: phoneNumber,
           }
         );
+        setTimeout(() => {
+          this.setState({ signingUp: false });
+          this.props.toggleLogIn(username, password);
+        }, 1000);
       } catch (e) {
         alert("Server Error");
+        this.setState({ signingUp: false });
         return;
       }
 
       //sign user in
-      this.props.toggleLogIn(phoneNumber, password);
       return;
     }
   };
@@ -89,25 +100,29 @@ class SignUpContainer extends Component {
         </View>
       );
     } else {
-      return (
-        <KeyboardAvoidingView
-          enabled
-          style={{}}
-          keyboardVerticalOffset={0}
-          behavior="padding"
-        >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.signUpContainer}>
-              <SignUpQueueManager
-                signUp={this.signUp}
-                toggleLogInSignUp={toggleLogInSignUp}
-                queueMember={false}
-                toggleLogIn={toggleLogIn}
-              />
-            </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-      );
+      if (this.state.signingUp) {
+        return <></>;
+      } else {
+        return (
+          <KeyboardAvoidingView
+            enabled
+            style={{}}
+            keyboardVerticalOffset={0}
+            behavior="padding"
+          >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={styles.signUpContainer}>
+                <SignUpQueueManager
+                  signUp={this.signUp}
+                  toggleLogInSignUp={toggleLogInSignUp}
+                  queueMember={false}
+                  toggleLogIn={toggleLogIn}
+                />
+              </View>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
+        );
+      }
     }
   }
 }
