@@ -26,6 +26,7 @@ export default class App extends Component {
   };
 
   resetPassword = (username) => {
+    console.log(username);
     return new Promise(async (res, rej) => {
       try {
         let { data } = await Axios.post(
@@ -40,7 +41,7 @@ export default class App extends Component {
           alert("User Not Found");
         }
       } catch (e) {
-        // alert(e);
+        console.log(e);
         alert("System Error");
       }
     });
@@ -328,5 +329,6 @@ const styles = StyleSheet.create({
   },
   loggedInContainer: {
     flex: 1,
+    display: "flex",
   },
 });

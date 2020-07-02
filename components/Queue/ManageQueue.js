@@ -78,18 +78,34 @@ class ManageQueue extends Component {
         );
       } else {
         return (
-          <ScrollView>
-            <View style={styles.ManageQueueContainer}>
+          <ScrollView style={styles.ManageQueueContainer}>
+            <View>
               <Text style={styles.titleText}>{queueData.title}</Text>
-              <Counter
-                count={queueData.count}
-                updateQueueCount={updateQueueCount}
-              />
-              <QueueMeta
-                editing={false}
-                queueData={queueData}
-                userObj={userObj}
-              />
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <Counter
+                  count={queueData.count}
+                  updateQueueCount={updateQueueCount}
+                />
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  marginTop: 50,
+                }}
+              >
+                <QueueMeta
+                  editing={false}
+                  queueData={queueData}
+                  userObj={userObj}
+                  updateQueueMeta={updateQueueMeta}
+                />
+              </View>
             </View>
           </ScrollView>
         );
@@ -109,14 +125,18 @@ export default ManageQueue;
 const styles = StyleSheet.create({
   ManageQueueContainer: {
     height: "150%",
+    flex: 1,
     paddingTop: 50,
-    alignItems: "center",
+    // alignItems: "center",
+    backgroundColor: "#f5f5f5",
+    // backgroundColor: `${selectedQueue ? "#9191" : "#f5f5f5"}`,
   },
   titleText: {
     fontWeight: "200",
     marginBottom: 10,
     fontSize: 35,
     color: "#121212",
+    textAlign: "center",
   },
 });
 

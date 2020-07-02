@@ -134,8 +134,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 9,
     width: "65%",
-    borderWidth: 1,
-    borderColor: "#eee",
     alignContent: "center",
     shadowColor: "#000000",
     shadowOffset: {
@@ -155,7 +153,7 @@ const styles = StyleSheet.create({
   countTextContainer2: {
     paddingTop: 50,
     paddingBottom: 50,
-    backgroundColor: "red",
+    backgroundColor: "salmon",
     borderTopRightRadius: 9,
     borderTopLeftRadius: 9,
   },
