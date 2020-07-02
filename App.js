@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   Image,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
 import Axios from "axios";
+import AsyncStorage from "@react-native-community/async-storage";
 
 //comps
 import HeaderContainer from "./components/Header/HeaderContainer";
@@ -23,6 +23,25 @@ export default class App extends Component {
     userObj: false,
     queueData: false,
     showSettings: false,
+  };
+
+  storeLoginState = async () => {
+    try {
+      const jsonValue = JSON.stringify(this.state);
+      await AsyncStorage.setItem("@loginState_key", jsonValue);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  getLoginState = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("@loginState_key");
+      return jsonValue ? jsonValue : null;
+    } catch (e) {
+      // error reading value
+      return null;
+    }
   };
 
   resetPassword = (username) => {
@@ -110,6 +129,7 @@ export default class App extends Component {
         queueData,
       }));
     }
+    this.storeLoginState();
   };
 
   // TODO use username instead of phonenumber
@@ -229,6 +249,14 @@ export default class App extends Component {
   toggleLogInSignUp = () => {
     this.setState({ isSignedUp: !this.state.isSignedUp });
   };
+
+  async componentDidMount() {
+    let oldState = await this.getLoginState();
+    if (oldState) {
+      oldState = JSON.parse(oldState);
+      this.setState(oldState);
+    }
+  }
 
   render() {
     let {
