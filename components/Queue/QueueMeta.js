@@ -263,6 +263,10 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
     }
   };
 
+  const scrollToBottom = () => {
+    this.scroller.scrollTo({ x: 0, y: 1000 });
+  };
+
   if (editing) {
     return (
       <KeyboardAvoidingView
@@ -275,6 +279,33 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.MetaContainerEditing}>
               <Text style={styles.titleText}>Covid - 19 Information</Text>
+              <View style={styles.MetaRowEditingFlex}>
+                <View style={styles.MetaTitleTextView}>
+                  <Text style={styles.MetaTitleText}>Masks Required?</Text>
+                </View>
+                <View style={styles.inputFieldBtn}>
+                  <RNPickerSelect
+                    textStyle={{ color: "#5cb85c" }}
+                    style={{ ...pickerSelectStyles }}
+                    onValueChange={(value) => setMask(value)}
+                    value={mask}
+                    items={[
+                      {
+                        label: "Yes",
+                        value: true,
+
+                        key: "true",
+                      },
+                      {
+                        label: "No",
+                        value: false,
+
+                        key: "false",
+                      },
+                    ]}
+                  />
+                </View>
+              </View>
               <View style={styles.MetaRowEditingFlex}>
                 <View style={styles.MetaTitleTextView}>
                   <Text style={styles.MetaTitleText}>Sanitizer Available?</Text>
@@ -304,33 +335,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                   />
                 </View>
               </View>
-              <View style={styles.MetaRowEditingFlex}>
-                <View style={styles.MetaTitleTextView}>
-                  <Text style={styles.MetaTitleText}>Masks Required?</Text>
-                </View>
-                <View style={styles.inputFieldBtn}>
-                  <RNPickerSelect
-                    textStyle={{ color: "#5cb85c" }}
-                    style={{ ...pickerSelectStyles }}
-                    onValueChange={(value) => setMask(value)}
-                    value={mask}
-                    items={[
-                      {
-                        label: "Yes",
-                        value: true,
 
-                        key: "true",
-                      },
-                      {
-                        label: "No",
-                        value: false,
-
-                        key: "false",
-                      },
-                    ]}
-                  />
-                </View>
-              </View>
               <View
                 style={{
                   marginTop: 5,
@@ -1660,13 +1665,16 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
     );
   } else {
     return (
-      <Animated.ScrollView ref={(ref) => (this.scrollView = ref)}>
+      <ScrollView
+        ref={(scroller) => {
+          this.scroller = scroller;
+        }}
+      >
         <View style={styles.MetaContainer}>
           <View style={styles.MetaRow}>
             <View style={{ paddingRight: 20, paddingLeft: 20 }}>
               <Text style={styles.MetaTitleText}>Business Message</Text>
               {/* <Text style={styles.MetaData}>{queueData.message}</Text> */}
-
               <TextInput
                 style={styles.MetaDataParagraphInput}
                 defaultValue={message}
@@ -1674,7 +1682,8 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                 numberOfLines={3}
                 onChangeText={(value) => setMessage(value)}
                 onFocus={() => {
-                  this.scrollView = view;
+                  // this.scrollView.scrollToEnd();
+                  scrollToBottom();
                 }}
               ></TextInput>
             </View>
@@ -1696,6 +1705,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
               )}
             </View>
           </View>
+
           <View
             style={{
               marginTop: 20,
@@ -1752,7 +1762,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
             </View>
           </View>
         </View>
-      </Animated.ScrollView>
+      </ScrollView>
     );
   }
 }
@@ -1768,9 +1778,9 @@ const pickerSelectStyles = StyleSheet.create({
 
 const styles = StyleSheet.create({
   MetaContainer: {
-    paddingTop: 10,
+    paddingTop: 0,
     // flex: 1,
-    overflow: "scroll",
+    // overflow: "scroll",
     justifyContent: "flex-end",
   },
   MetaContainerEditing: {
@@ -1784,7 +1794,7 @@ const styles = StyleSheet.create({
   MetaRow: {
     padding: 10,
     marginBottom: -10,
-    marginTop: 0,
+    marginTop: 10,
     backgroundColor: "white",
   },
   MetaRowEditing: {
