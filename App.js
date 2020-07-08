@@ -5,6 +5,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
+  AppState,
 } from "react-native";
 import Axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -19,7 +20,7 @@ import LogInContainer from "./components/LogIn/LogInContainer";
 export default class App extends Component {
   state = {
     isLoggedIn: false,
-    isSignedUp: true,
+    isSignedUp: false,
     userObj: false,
     queueData: false,
     showSettings: false,
@@ -79,13 +80,16 @@ export default class App extends Component {
         userObj: false,
         queueData: false,
         isLoggedIn: !isLoggedIn,
-        isSignedUp: true,
+        isSignedUp: false,
         showSettings: false,
       }));
     } else {
       //1. use params for log in
       try {
-        userObj = await this.logIn(username, password);
+        userObj = await this.logIn(
+          username.toLocaleLowerCase().trim(),
+          password
+        );
       } catch (e) {
         alert(e);
         return;
@@ -95,17 +99,12 @@ export default class App extends Component {
         userObj,
         isLoggedIn: !isLoggedIn,
       }));
-
       // TODO add username
       try {
         queueData = await this.getQueueData(userObj.id["$numberLong"]);
         let newJSON = {
           title: queueData.title,
           message: queueData.message,
-          hours: {
-            open: queueData.open,
-            close: queueData.close,
-          },
           active: queueData.active,
           count: queueData.count["$numberLong"],
           id: queueData.id["$numberLong"],
@@ -115,8 +114,15 @@ export default class App extends Component {
           state: queueData.state,
           mask: queueData.mask,
           sani: queueData.sani,
-          maxCount: queueData.maxCount,
+          maxCount: queueData.maxCount["$numberLong"],
           businessNumber: queueData.businessNumber,
+          monday: queueData.monday,
+          tuesday: queueData.tuesday,
+          wednesday: queueData.wednesday,
+          thursday: queueData.thursday,
+          friday: queueData.friday,
+          saturday: queueData.saturday,
+          sunday: queueData.sunday,
         };
         queueData = newJSON;
       } catch (e) {
@@ -179,7 +185,6 @@ export default class App extends Component {
   updateUserQueue = ({
     title,
     message,
-    hours,
     count,
     active,
     id,
@@ -191,8 +196,16 @@ export default class App extends Component {
     sani,
     maxCount,
     businessNumber,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
   }) => {
     return new Promise(async (res, rej) => {
+      // return;
       // TODO add phonenumber
       try {
         let { data: queueData } = await Axios.post(
@@ -200,8 +213,6 @@ export default class App extends Component {
           {
             title: title,
             message: message,
-            open: hours.open,
-            close: hours.close,
             count: parseInt(count),
             active: active,
             id: parseInt(id),
@@ -213,26 +224,37 @@ export default class App extends Component {
             sani: sani,
             maxCount: parseInt(maxCount),
             businessNumber: businessNumber,
+            monday,
+            tuesday,
+            wednesday,
+            thursday,
+            friday,
+            saturday,
+            sunday,
           }
         );
+        // return;
         let newJSON = {
           title: queueData.title,
           message: queueData.message,
-          hours: {
-            open: queueData.open,
-            close: queueData.close,
-          },
-          active: queueData.active,
+          active: active,
           count: queueData.count["$numberLong"],
           id: queueData.id["$numberLong"],
-          address: queueData.address,
-          zipCode: queueData.zipCode,
+          address: address,
+          zipCode: zipCode,
           city: city,
           state: state,
           mask: mask,
           sani: sani,
-          maxCount: maxCount,
+          maxCount: queueData.maxCount["$numberLong"],
           businessNumber: businessNumber,
+          monday: queueData.monday,
+          tuesday: queueData.tuesday,
+          wednesday: queueData.wednesday,
+          thursday: queueData.thursday,
+          friday: queueData.friday,
+          saturday: queueData.saturday,
+          sunday: queueData.sunday,
         };
         queueData = newJSON;
 
@@ -256,7 +278,19 @@ export default class App extends Component {
       oldState = JSON.parse(oldState);
       this.setState(oldState);
     }
+    AppState.addEventListener("change", this.handleAppStateChange);
   }
+
+  async componentWillUnmount() {
+    this.storeLoginState();
+  }
+
+  handleAppStateChange = (nextAppState) => {
+    console.log(nextAppState);
+    if (nextAppState === "inactive" || nextAppState === "background") {
+      this.storeLoginState();
+    }
+  };
 
   render() {
     let {
@@ -350,10 +384,9 @@ function DisplayLogInSignUp({
 const styles = StyleSheet.create({
   loginSignUpContainer: {
     margin: 20,
-    alignContent: "center",
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "center", //flexes items to the center
+    // alignItems: "center", makes the width of the content smaller
   },
   loggedInContainer: {
     flex: 1,

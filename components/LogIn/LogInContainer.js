@@ -71,8 +71,8 @@ class LogInContainer extends Component {
 
 const styles = StyleSheet.create({
   logInContainer: {
-    padding: 30,
-    alignSelf: "stretch",
+    // padding: 30,
+    // alignSelf: "stretch",
     overflow: "hidden",
   },
 });

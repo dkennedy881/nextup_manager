@@ -34,39 +34,45 @@ function Step2({
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.signUpContainer}>
-        <Text style={styles.signUpTitleText}>Verified!</Text>
+        <Text style={styles.signUpTitleText}>Account Created!</Text>
+        {/* <Text style={styles.signUpTitleText}>
+          Please enter additional business information. All fields are required.
+        </Text> */}
         <Text style={styles.signUpSimpleText}>
           Please enter additional business information. All fields are required.
         </Text>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Phone Number</Text>
+          {/* <Text style={styles.signUpFieldText}>Phone Number</Text> */}
           <TextInput
             style={styles.inputField}
             onChangeText={(text) => updatePhoneNumber(text)}
             value={phoneNumber}
-            placeholder=""
+            placeholder="Business Phone Number"
+            // textContentType={"telephoneNumber"}
+            // dataDetectorTypes={"phoneNumber"}
+            autoCompleteType={"tel"}
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Address: </Text>
+          {/* <Text style={styles.signUpFieldText}>Address: </Text> */}
           <TextInput
             style={styles.inputField}
             onChangeText={(text) => updateAddress(text)}
             value={address}
-            placeholder=""
+            placeholder="Address"
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>City: </Text>
+          {/* <Text style={styles.signUpFieldText}>City: </Text> */}
           <TextInput
             style={styles.inputField}
             onChangeText={(text) => updateCity(text)}
             value={city}
-            placeholder=""
+            placeholder="City"
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>State: </Text>
+          {/* <Text style={styles.signUpFieldText}>State: </Text> */}
           {/* <TextInput
           style={styles.inputField}
           onChangeText={(text) => updateState(text)}
@@ -76,6 +82,15 @@ function Step2({
           <View style={styles.inputField}>
             <RNPickerSelect
               onValueChange={(value) => updateState(value)}
+              style={{
+                inputIOS: {
+                  color: "black",
+                  fontSize: 20,
+                  // paddingTop: 13,
+                  // paddingHorizontal: 10,
+                  // paddingBottom: 12,
+                },
+              }}
               placeholder={{
                 label: "Select a state...",
                 value: null,
@@ -441,18 +456,18 @@ function Step2({
           </View>
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>ZIP/Postal Code: </Text>
+          {/* <Text style={styles.signUpFieldText}>ZIP/Postal Code: </Text> */}
           <TextInput
             style={styles.inputField}
             onChangeText={(text) => updateZip(text)}
             value={zipCode}
-            placeholder=""
+            placeholder="ZIP/Postal Code"
           />
         </View>
         <View style={styles.signUpFieldBtnContainer}>
           <View style={styles.signUpFieldBtnContainer}>
             <TouchableOpacity onPress={forwardState} style={styles.signInBtn}>
-              <Text>Create Account</Text>
+              <Text style={{ color: "yellow" }}>Create Account</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.signUpFieldBtnContainer}>
@@ -477,6 +492,8 @@ const styles = StyleSheet.create({
   },
   signUpSimpleText: {
     marginTop: 15,
+    fontSize: 20,
+    textAlign: "center",
   },
   skipBtn: {
     paddingTop: 10,
@@ -503,6 +520,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingLeft: 15,
     borderRadius: 9,
+    backgroundColor: "#87c8e0",
   },
   forgotPasswordBtn: {
     paddingTop: 10,
@@ -512,17 +530,26 @@ const styles = StyleSheet.create({
   },
   signUpTitleText: {
     fontSize: 25,
+    textAlign: "center",
   },
   signUpFieldText: {
     fontSize: 15,
     marginRight: 10,
   },
+  // inputField: {
+  //   flex: 1,
+  //   borderWidth: 0.5,
+  //   borderTopColor: "transparent",
+  //   borderLeftColor: "transparent",
+  //   borderRightColor: "transparent",
+  //   borderBottomColor: "#cccc",
+  // },
   inputField: {
     flex: 1,
     borderWidth: 0.5,
-    borderTopColor: "transparent",
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: "#cccc",
+    borderColor: "#cccc",
+    height: 50,
+    padding: 10,
+    fontSize: 20,
   },
 });

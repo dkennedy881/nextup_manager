@@ -69,7 +69,6 @@ class Counter extends Component {
       ...state,
       setCounter: count,
     }));
-
     updateQueueCount(count);
   };
 

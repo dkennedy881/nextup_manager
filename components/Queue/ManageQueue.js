@@ -16,6 +16,7 @@ import {
   ListItem,
   ImageBackground,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
 } from "react-native";
@@ -50,7 +51,7 @@ class ManageQueue extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let { queueData, showSettings } = nextProps;
-
+    // alert(queueData.active);
     if (queueData) {
       return {
         queueData,
@@ -78,36 +79,50 @@ class ManageQueue extends Component {
         );
       } else {
         return (
-          <ScrollView style={styles.ManageQueueContainer}>
-            <View>
-              <Text style={styles.titleText}>{queueData.title}</Text>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                }}
-              >
-                <Counter
-                  count={queueData.count}
-                  updateQueueCount={updateQueueCount}
-                />
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  marginTop: 50,
-                }}
-              >
-                <QueueMeta
-                  editing={false}
-                  queueData={queueData}
-                  userObj={userObj}
-                  updateQueueMeta={updateQueueMeta}
-                />
-              </View>
-            </View>
-          </ScrollView>
+          <KeyboardAvoidingView
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+            behavior="padding"
+            enabled
+          >
+            <ScrollView style={styles.ManageQueueContainer}>
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View>
+                  <Text style={styles.titleText}>{queueData.title}</Text>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Counter
+                      count={queueData.count}
+                      updateQueueCount={updateQueueCount}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      marginTop: 50,
+                      paddingBottom: 100,
+                    }}
+                  >
+                    <QueueMeta
+                      editing={false}
+                      queueData={queueData}
+                      userObj={userObj}
+                      updateQueueMeta={updateQueueMeta}
+                    />
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </ScrollView>
+            {/* <View style={{ height: 60, backgroundColor: "none" }} /> */}
+          </KeyboardAvoidingView>
         );
       }
     } else {
@@ -124,12 +139,9 @@ export default ManageQueue;
 
 const styles = StyleSheet.create({
   ManageQueueContainer: {
-    height: "150%",
     flex: 1,
     paddingTop: 50,
-    // alignItems: "center",
     backgroundColor: "#f5f5f5",
-    // backgroundColor: `${selectedQueue ? "#9191" : "#f5f5f5"}`,
   },
   titleText: {
     fontWeight: "200",

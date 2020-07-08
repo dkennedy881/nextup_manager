@@ -112,7 +112,7 @@ class SignUpQueueManager extends Component {
     let { data } = await Axios.post(
       "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/checkNewQueueManager/incoming_webhook/webhook0",
       {
-        username: String(username),
+        username: String(username).toLocaleLowerCase().trim(),
         password: String(password),
       }
     );

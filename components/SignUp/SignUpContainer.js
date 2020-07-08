@@ -107,7 +107,7 @@ class SignUpContainer extends Component {
           <KeyboardAvoidingView
             enabled
             style={{}}
-            keyboardVerticalOffset={0}
+            keyboardVerticalOffset={100}
             behavior="padding"
           >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -131,23 +131,24 @@ export default SignUpContainer;
 
 const styles = StyleSheet.create({
   signUpContainer: {
-    borderColor: "#eeee",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderRadius: 9,
-    padding: 30,
-    alignSelf: "stretch",
-    overflow: "hidden",
+    // borderColor: "#eeee",
+    // borderStyle: "solid",
+    // borderWidth: 1,
+    // borderRadius: 9,
+    // padding: 30,
+    // alignSelf: "stretch",
+    // overflow: "hidden",
+    // backgroundColor: "red",
   },
   signUpFieldTextContainer: {
-    display: "flex",
-    flexDirection: "row",
-    marginTop: 10,
+    //   display: "flex",
+    //   flexDirection: "row",
+    //   marginTop: 10,
   },
   signUpTitleText: {
-    fontSize: 25,
+    // fontSize: 25,
   },
   signUpFieldText: {
-    fontSize: 15,
+    // fontSize: 15,
   },
 });

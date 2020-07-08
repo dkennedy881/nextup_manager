@@ -30,54 +30,71 @@ function Step1({
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View>
-        <Text style={styles.signUpTitleText}>Sign Up</Text>
+        <Text style={styles.signUpTitleText}>Let's get started...</Text>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Business Name</Text>
+          {/* <Text style={styles.signUpFieldText}>Business Name</Text> */}
           <TextInput
             value={name}
             style={styles.inputField}
             onChangeText={(text) => updateName(text)}
-            placeholder=""
+            placeholder="Business Name"
+            textContentType={"organizationName"}
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Email</Text>
+          {/* <Text style={styles.signUpFieldText}>Email</Text> */}
           <TextInput
             value={username}
             style={styles.inputField}
             onChangeText={(text) => updateUsername(text)}
-            placeholder=""
+            placeholder="Email"
+            textContentType={"emailAddress"}
+            autoCompleteType={"email"}
+            keyboardType={"email-address"}
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Password</Text>
+          {/* <Text style={styles.signUpFieldText}>Password</Text> */}
           <TextInput
             value={password}
             style={styles.inputField}
             onChangeText={(text) => updatePassword(text)}
-            placeholder=""
+            placeholder="Password"
+            secureTextEntry={true}
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Re-enter Password</Text>
+          {/* <Text style={styles.signUpFieldText}>Re-enter Password</Text> */}
           <TextInput
             value={passwordValidate}
             style={styles.inputField}
             onChangeText={(text) => updatePasswordValidate(text)}
-            placeholder=""
+            placeholder="Re-enter Password"
+            secureTextEntry={true}
           />
         </View>
-        <View style={styles.signUpFieldBtnContainer}>
+        <View style={styles.signUpFieldTextContainer}>
           <TouchableOpacity style={styles.signInBtn} onPress={forwardState}>
-            <Text>Verify Account</Text>
+            <Text style={{ textAlign: "center", color: "yellow" }}>
+              Create account
+            </Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.signUpFieldBtnContainer}>
-          <TouchableOpacity
-            style={styles.forgotPasswordBtn}
-            onPress={toggleLogInSignUp}
-          >
-            <Text>Already have an account? Sign Up</Text>
+        <View style={styles.signUpFieldTextContainer}>
+          <View
+            style={{
+              width: "100%",
+              borderColor: "#eee",
+              borderBottomWidth: 1,
+            }}
+          ></View>
+        </View>
+        <View style={styles.signUpFieldTextContainer}>
+          <TouchableOpacity style={styles.logInBtn} onPress={toggleLogInSignUp}>
+            <Text style={{ textAlign: "center", color: "black" }}>
+              Already have an account?{" "}
+              <Text style={{ color: "#87c8e0" }}>Sign In</Text>
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -119,6 +136,20 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingLeft: 15,
     borderRadius: 9,
+    width: "100%",
+    backgroundColor: "#87c8e0",
+  },
+  logInBtn: {
+    borderColor: "transparent",
+    borderStyle: "solid",
+    borderWidth: 1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 15,
+    paddingLeft: 15,
+    borderRadius: 9,
+    width: "100%",
+    // backgroundColor: "salmon",
   },
   forgotPasswordBtn: {
     paddingTop: 10,
@@ -128,6 +159,7 @@ const styles = StyleSheet.create({
   },
   signUpTitleText: {
     fontSize: 25,
+    textAlign: "center",
   },
   signUpFieldText: {
     fontSize: 15,
@@ -136,9 +168,9 @@ const styles = StyleSheet.create({
   inputField: {
     flex: 1,
     borderWidth: 0.5,
-    borderTopColor: "transparent",
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: "#cccc",
+    borderColor: "#cccc",
+    height: 50,
+    padding: 10,
+    fontSize: 20,
   },
 });
