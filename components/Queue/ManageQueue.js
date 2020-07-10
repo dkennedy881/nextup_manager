@@ -44,6 +44,9 @@ class ManageQueue extends Component {
 
   updateQueueMeta = async (queueData) => {
     let { updateUserQueue } = this.props;
+    let { queueData: withCount } = this.state;
+    queueData.count = withCount.count;
+
     //update the app.js state
     await updateUserQueue(queueData);
     return;

@@ -185,6 +185,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
       saturday: JSON.stringify(saturday),
       sunday: JSON.stringify(sunday),
     });
+
     setShowSaving(false);
     // }, 15=00);
   }
@@ -261,10 +262,6 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
       default:
         setSunday({ ...sunday, active: !sunday.active });
     }
-  };
-
-  const scrollToBottom = () => {
-    this.scroller.scrollTo({ x: 0, y: 1000 });
   };
 
   if (editing) {
@@ -1634,7 +1631,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
         <View
           style={{
             position: "absolute",
-            bottom: 0,
+            bottom: -4,
             backgroundColor: "white",
             width: "100%",
             flex: 1,
@@ -1665,29 +1662,29 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
     );
   } else {
     return (
-      <ScrollView
-        ref={(scroller) => {
-          this.scroller = scroller;
-        }}
-      >
-        <View style={styles.MetaContainer}>
-          <View style={styles.MetaRow}>
-            <View style={{ paddingRight: 20, paddingLeft: 20 }}>
-              <Text style={styles.MetaTitleText}>Business Message</Text>
-              {/* <Text style={styles.MetaData}>{queueData.message}</Text> */}
-              <TextInput
-                style={styles.MetaDataParagraphInput}
-                defaultValue={message}
-                multiline
-                numberOfLines={3}
-                onChangeText={(value) => setMessage(value)}
-                onFocus={() => {
-                  // this.scrollView.scrollToEnd();
-                  scrollToBottom();
-                }}
-              ></TextInput>
-            </View>
-            <View style={styles.ButtonRow}>
+      <View style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          enabled
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={100}
+          behavior="padding"
+        >
+          <ScrollView>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={styles.MetaContainer}>
+                <View style={styles.MetaRow}>
+                  <View style={{ paddingRight: 20, paddingLeft: 20 }}>
+                    <Text style={styles.MetaTitleText}>Business Message</Text>
+                    {/* <Text style={styles.MetaData}>{queueData.message}</Text> */}
+                    <TextInput
+                      style={styles.MetaDataParagraphInput}
+                      defaultValue={message}
+                      multiline
+                      numberOfLines={3}
+                      onChangeText={(value) => setMessage(value)}
+                    ></TextInput>
+                  </View>
+                  {/* <View style={styles.ButtonRow}>
               {!checkDirty() ? (
                 <TouchableOpacity
                   style={styles.SaveButton}
@@ -1703,66 +1700,123 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                   <Text style={styles.SaveButtonText}>Update</Text>
                 </TouchableOpacity>
               )}
-            </View>
-          </View>
+            </View> */}
+                </View>
+                <View
+                  style={{
+                    marginTop: 20,
+                    marginBottom: 5,
+                    padding: 30,
+                    paddingBottom: 0,
+                    paddingTop: 0,
+                    backgroundColor: "white",
+                    // height: 90,
+                  }}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      height: 90,
+                    }}
+                  >
+                    <View style={styles.MetaTitleTextView}>
+                      <Text style={styles.MetaTitleText}>Active</Text>
+                      <View style={styles.MetaTitleTextSMFlex}>
+                        <Text>
+                          Determines if business visible to queue members.
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        padding: 20,
+                        paddingTop: 15,
+                        borderRadius: 9,
+                        height: 90,
+                        display: "flex",
+                        flexDirection: "row",
+                        alignContent: "center",
+                        justifyContent: "flex-end",
+                        marginTop: 20,
+                      }}
+                    >
+                      <RNPickerSelect
+                        textStyle={{ color: "#5cb85c" }}
+                        style={{ ...pickerSelectStyles }}
+                        onValueChange={(value) => setactive(value)}
+                        value={active}
+                        items={[
+                          {
+                            label: "Yes",
+                            value: true,
 
-          <View
-            style={{
-              marginTop: 20,
-              marginBottom: 5,
-              padding: 30,
-              paddingBottom: 0,
-              paddingTop: 0,
-              backgroundColor: "white",
-              display: "flex",
-              flexDirection: "row",
-              height: 90,
-            }}
-          >
-            <View style={styles.MetaTitleTextView}>
-              <Text style={styles.MetaTitleText}>Active</Text>
-              <View style={styles.MetaTitleTextSMFlex}>
-                <Text>Determines if business visible to queue members.</Text>
+                            key: "true55",
+                          },
+                          {
+                            label: "No",
+                            value: false,
+
+                            key: "false55",
+                          },
+                        ]}
+                      />
+                    </View>
+                  </View>
+                  {/* <View style={styles.ButtonRowB}>
+              {!checkDirty() ? (
+                <TouchableOpacity
+                  style={styles.SaveButton}
+                  onPress={() => update()}
+                >
+                  <Text style={styles.SaveButtonText}>Update</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.SaveButton2}
+                  onPress={() => update()}
+                >
+                  <Text style={styles.SaveButtonText}>Update</Text>
+                </TouchableOpacity>
+              )}
+            </View> */}
+                </View>
               </View>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                padding: 20,
-                paddingTop: 15,
-                borderRadius: 9,
-                height: 90,
-                display: "flex",
-                flexDirection: "row",
-                alignContent: "center",
-                justifyContent: "flex-end",
-                marginTop: 20,
-              }}
-            >
-              <RNPickerSelect
-                textStyle={{ color: "#5cb85c" }}
-                style={{ ...pickerSelectStyles }}
-                onValueChange={(value) => setactive(value)}
-                value={active}
-                items={[
-                  {
-                    label: "Yes",
-                    value: true,
-
-                    key: "true55",
-                  },
-                  {
-                    label: "No",
-                    value: false,
-
-                    key: "false55",
-                  },
-                ]}
-              />
+            </TouchableWithoutFeedback>
+          </ScrollView>
+        </KeyboardAvoidingView>
+        <View
+          style={{
+            position: "absolute",
+            top: "100%",
+            backgroundColor: "white",
+            width: "100%",
+            flex: 1,
+            height: 80,
+          }}
+        >
+          <View style={styles.ButtonRowNew1}>
+            <View style={styles.ButtonRowNew}>
+              {!checkDirty() ? (
+                <TouchableOpacity
+                  style={styles.SaveButtonNew}
+                  onPress={() => update()}
+                >
+                  <Text style={styles.SaveButtonText}>Update</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.SaveButtonNew2}
+                  onPress={() => update()}
+                >
+                  <Text style={styles.SaveButtonText}>Update</Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -1778,10 +1832,17 @@ const pickerSelectStyles = StyleSheet.create({
 
 const styles = StyleSheet.create({
   MetaContainer: {
-    paddingTop: 0,
+    // paddingTop: 0,
+    // // flex: 1,
+    // // overflow: "scroll",
+    // justifyContent: "flex-end",
+    // marginBottom: 300,
+    paddingTop: 10,
     // flex: 1,
-    // overflow: "scroll",
+    overflow: "scroll",
     justifyContent: "flex-end",
+    backgroundColor: "#f5f5f5",
+    paddingBottom: 100,
   },
   MetaContainerEditing: {
     paddingTop: 10,
@@ -1836,6 +1897,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 15,
   },
+  ButtonRowA: {
+    flexDirection: "row-reverse",
+    // marginHorizontal: 20,
+    marginBottom: 15,
+  },
+  ButtonRowB: {
+    // flexDirection: "row-reverse",
+    // marginHorizontal: 20,
+    marginBottom: 15,
+  },
   ButtonRowNew1: {
     textAlign: "center",
     width: "100%",
@@ -1856,6 +1927,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 9,
   },
+
   SaveButtonNew: {
     backgroundColor: "#87c8e0",
     color: "white",
@@ -1890,6 +1962,7 @@ const styles = StyleSheet.create({
   SaveButtonText: {
     fontWeight: "700",
     color: "yellow",
+    textAlign: "center",
   },
   MetaTitleTextView: {
     display: "flex",

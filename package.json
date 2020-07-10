@@ -8,23 +8,23 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.11.0",
-    "@react-native-community/datetimepicker": "2.2.2",
+    "@react-native-community/async-storage": "~1.11.0",
+    "@react-native-community/datetimepicker": "2.4.0",
     "axios": "^0.19.2",
     "emailjs-com": "^2.4.1",
-    "expo": "^35.0.0",
+    "expo": "^38.0.0",
     "mongodb-stitch-react-native-sdk": "^4.8.0",
-    "react": "16.8.3",
-    "react-dom": "16.8.3",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
+    "react": "16.11.0",
+    "react-dom": "16.11.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
     "react-native-elements": "^2.0.0",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-modal-datetime-picker": "^8.7.1",
     "react-native-picker-select": "^7.0.0",
-    "react-native-web": "^0.11.7"
+    "react-native-web": "~0.11.7"
   },
   "devDependencies": {
-    "babel-preset-expo": "^7.0.0",
+    "babel-preset-expo": "^8.2.3",
     "@babel/core": "^7.8.6",
     "mem": ">=4.0.0"
   },
