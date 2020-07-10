@@ -89,13 +89,13 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
     businessNumber,
     address,
     zipCode,
-    monday: JSON.stringify(monday),
-    tuesday: JSON.stringify(tuesday),
-    wednesday: JSON.stringify(wednesday),
-    thursday: JSON.stringify(thursday),
-    friday: JSON.stringify(friday),
-    saturday: JSON.stringify(saturday),
-    sunday: JSON.stringify(sunday),
+    monday: monday,
+    tuesday: tuesday,
+    wednesday: wednesday,
+    thursday: thursday,
+    friday: friday,
+    saturday: saturday,
+    sunday: sunday,
   });
 
   const checkDirty = () => {
@@ -111,15 +111,35 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
       businessNumber,
       address,
       zipCode,
-      monday: JSON.stringify(monday),
-      tuesday: JSON.stringify(tuesday),
-      wednesday: JSON.stringify(wednesday),
-      thursday: JSON.stringify(thursday),
-      friday: JSON.stringify(friday),
-      saturday: JSON.stringify(saturday),
-      sunday: JSON.stringify(sunday),
+      monday: monday,
+      tuesday: tuesday,
+      wednesday: wednesday,
+      thursday: thursday,
+      friday: friday,
+      saturday: saturday,
+      sunday: sunday,
     };
-    return JSON.stringify(og) !== JSON.stringify(newObj);
+    // console.log(newObj);
+    // console.log(og);
+    // console.log("_________________________");
+    // return JSON.stringify(og) !== JSON.stringify(newObj);
+
+    let isDirty = false;
+    Reflect.ownKeys(og).forEach((k) => {
+      if (typeof og[k] !== "object") {
+        if (og[k] !== newObj[k]) {
+          isDirty = true;
+        }
+      } else {
+        Reflect.ownKeys(og[k]).forEach((kNested) => {
+          if (og[k][kNested] !== newObj[k][kNested]) {
+            console.log(og[k][kNested]);
+            isDirty = true;
+          }
+        });
+      }
+    });
+    return isDirty;
   };
 
   const timeConvertor = (time) => {
@@ -177,13 +197,13 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
       businessNumber,
       address,
       zipCode,
-      monday: JSON.stringify(monday),
-      tuesday: JSON.stringify(tuesday),
-      wednesday: JSON.stringify(wednesday),
-      thursday: JSON.stringify(thursday),
-      friday: JSON.stringify(friday),
-      saturday: JSON.stringify(saturday),
-      sunday: JSON.stringify(sunday),
+      monday: monday,
+      tuesday: tuesday,
+      wednesday: wednesday,
+      thursday: thursday,
+      friday: friday,
+      saturday: saturday,
+      sunday: sunday,
     });
 
     setShowSaving(false);
@@ -458,7 +478,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeMonday}
                       mode="time"
-                      headerTextIOS="What time does your business open on Monday ?"
+                      headerTextIOS="What time does your business open on Monday?"
                       date={timeConvertor(monday.open.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setOpen(
@@ -487,7 +507,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeCloseMonday}
                       mode="time"
-                      headerTextIOS="What time does your business close?"
+                      headerTextIOS="What time does your business close on Monday?"
                       date={timeConvertor(monday.close.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setClose(
@@ -566,7 +586,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeTuesday}
                       mode="time"
-                      headerTextIOS="What time does your business open on Tuesday ?"
+                      headerTextIOS="What time does your business open on Tuesday?"
                       date={timeConvertor(tuesday.open.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setOpen(
@@ -595,7 +615,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeCloseTuesday}
                       mode="time"
-                      headerTextIOS="What time does your business close?"
+                      headerTextIOS="What time does your business close on Tuesday?"
                       date={timeConvertor(tuesday.close.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setClose(
@@ -674,7 +694,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeWednesday}
                       mode="time"
-                      headerTextIOS="What time does your business open Wednesday ?"
+                      headerTextIOS="What time does your business open on Wednesday?"
                       date={timeConvertor(wednesday.open.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setOpen(
@@ -703,7 +723,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeCloseWednesday}
                       mode="time"
-                      headerTextIOS="What time does your business close?"
+                      headerTextIOS="What time does your business close on Wednesday?"
                       date={timeConvertor(
                         wednesday.close.replace(/\s/g, ":00")
                       )}
@@ -784,7 +804,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeThursday}
                       mode="time"
-                      headerTextIOS="What time does your business open Thursday ?"
+                      headerTextIOS="What time does your business open on Thursday?"
                       date={timeConvertor(thursday.open.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setOpen(
@@ -813,7 +833,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeCloseThursday}
                       mode="time"
-                      headerTextIOS="What time does your business close?"
+                      headerTextIOS="What time does your business close on Thursday?"
                       date={timeConvertor(thursday.close.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setClose(
@@ -892,7 +912,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeFriday}
                       mode="time"
-                      headerTextIOS="What time does your business open Friday ?"
+                      headerTextIOS="What time does your business open Friday?"
                       date={timeConvertor(friday.open.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setOpen(
@@ -921,7 +941,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeCloseFriday}
                       mode="time"
-                      headerTextIOS="What time does your business close?"
+                      headerTextIOS="What time does your business close on Friday?"
                       date={timeConvertor(friday.close.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setClose(
@@ -1000,7 +1020,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeSaturday}
                       mode="time"
-                      headerTextIOS="What time does your business open Saturday ?"
+                      headerTextIOS="What time does your business open Saturday?"
                       date={timeConvertor(saturday.open.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setOpen(
@@ -1029,7 +1049,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeCloseSaturday}
                       mode="time"
-                      headerTextIOS="What time does your business close?"
+                      headerTextIOS="What time does your business close on Saturday?"
                       date={timeConvertor(saturday.close.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setClose(
@@ -1108,7 +1128,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeSunday}
                       mode="time"
-                      headerTextIOS="What time does your business open Sunday ?"
+                      headerTextIOS="What time does your business open Sunday?"
                       date={timeConvertor(sunday.open.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setOpen(
@@ -1137,7 +1157,7 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                     <DateTimePickerModal
                       isVisible={showTimeCloseSunday}
                       mode="time"
-                      headerTextIOS="What time does your business close?"
+                      headerTextIOS="What time does your business close on Sunday?"
                       date={timeConvertor(sunday.close.replace(/\s/g, ":00"))}
                       onConfirm={(value) => {
                         setClose(

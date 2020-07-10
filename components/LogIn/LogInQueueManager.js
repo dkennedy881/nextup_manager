@@ -83,7 +83,7 @@ function LogInQueueManager({ logIn, toggleLogInSignUp, callResetPassword }) {
             <TextInput
               style={styles.inputField}
               placeholder="Email"
-              defaultValue={username}
+              value={username}
               onChangeText={(value) => setUsername(value)}
               textContentType={"emailAddress"}
               autoCompleteType={"email"}
@@ -95,7 +95,7 @@ function LogInQueueManager({ logIn, toggleLogInSignUp, callResetPassword }) {
             <TextInput
               style={styles.inputField}
               placeholder="Password"
-              defaultValue={password}
+              value={password}
               onChangeText={(value) => setPassword(value)}
               secureTextEntry={true}
             />

@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   AppState,
+  StatusBar,
 } from "react-native";
 import Axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -286,7 +287,6 @@ export default class App extends Component {
   }
 
   handleAppStateChange = (nextAppState) => {
-    console.log(nextAppState);
     if (nextAppState === "inactive" || nextAppState === "background") {
       this.storeLoginState();
     }
@@ -347,6 +347,7 @@ function DisplayLogInSignUp({
 }) {
   return (
     <View style={styles.loginSignUpContainer}>
+      <StatusBar translucent barStyle="dark-content" />
       <View
         style={{
           display: "flex",
