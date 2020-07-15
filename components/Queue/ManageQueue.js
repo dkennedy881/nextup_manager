@@ -124,7 +124,6 @@ class ManageQueue extends Component {
                 </View>
               </TouchableWithoutFeedback>
             </ScrollView>
-            {/* <View style={{ height: 60, backgroundColor: "none" }} /> */}
           </KeyboardAvoidingView>
         );
       }

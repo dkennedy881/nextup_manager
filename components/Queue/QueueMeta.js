@@ -98,6 +98,15 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
     sunday: sunday,
   });
 
+  const preSetState = (val) => {
+    if (val) {
+      const city = val.split(",")[0].trim();
+      const state = val.split(",")[1].trim();
+      setState(state);
+      setCity(city);
+    }
+  };
+
   const checkDirty = () => {
     const newObj = {
       title,
@@ -439,6 +448,80 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
                 }}
               >
                 <Text style={styles.MetaTitleText}>Hours of Operation</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setShowTime(true);
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#6da8bd",
+                      fontWeight: "400",
+                      marginTop: 5,
+                    }}
+                  >
+                    Update All Open Hours
+                  </Text>
+                </TouchableOpacity>
+                <DateTimePickerModal
+                  isVisible={showTime}
+                  mode="time"
+                  headerTextIOS="What time does your business open?"
+                  date={timeConvertor("9:00 AM".replace(/\s/g, ":00"))}
+                  onConfirm={(value) => {
+                    const newTime = new Date(value)
+                      .toLocaleTimeString("en-US")
+                      .replace(/:\d{2}\s/g, " ");
+                    setOpen(newTime, "monday");
+                    setOpen(newTime, "tuesday");
+                    setOpen(newTime, "wednesday");
+                    setOpen(newTime, "thursday");
+                    setOpen(newTime, "friday");
+                    setOpen(newTime, "saturday");
+                    setOpen(newTime, "sunday");
+                    setShowTime(!showTime);
+                  }}
+                  onCancel={(value) => {
+                    setShowTime(!showTime);
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setShowTimeClose(true);
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#6da8bd",
+                      fontWeight: "400",
+                      marginTop: 5,
+                    }}
+                  >
+                    Update All Close Hours
+                  </Text>
+                </TouchableOpacity>
+                <DateTimePickerModal
+                  isVisible={showTimeClose}
+                  mode="time"
+                  headerTextIOS="What time does your business close?"
+                  date={timeConvertor("5:00 PM".replace(/\s/g, ":00"))}
+                  onConfirm={(value) => {
+                    const newTime = new Date(value)
+                      .toLocaleTimeString("en-US")
+                      .replace(/:\d{2}\s/g, " ");
+                    setClose(newTime, "monday");
+                    setClose(newTime, "tuesday");
+                    setClose(newTime, "wednesday");
+                    setClose(newTime, "thursday");
+                    setClose(newTime, "friday");
+                    setClose(newTime, "saturday");
+                    setClose(newTime, "sunday");
+                    setShowTimeClose(!showTimeClose);
+                  }}
+                  onCancel={(value) => {
+                    setShowTimeClose(!showTimeClose);
+                  }}
+                />
                 <View
                   style={{
                     padding: 2,
@@ -1200,372 +1283,28 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
               </View>
               <View style={styles.MetaRowEditing}>
                 <Text style={styles.MetaTitleText}>City</Text>
-                <TextInput
-                  style={styles.MetaDataTextInput}
-                  defaultValue={city}
-                  onChangeText={(value) => setCity(value)}
-                ></TextInput>
-              </View>
-              <View style={styles.MetaRowEditing}>
-                <Text style={styles.MetaTitleText}>State</Text>
                 <View style={styles.inputField}>
                   <RNPickerSelect
-                    onValueChange={(value) => setState(value)}
-                    value={state}
+                    onValueChange={(value) => preSetState(value)}
+                    value={`${city}, ${state}`}
                     items={[
                       {
-                        label: "Alabama",
-                        value: "Alabama",
+                        label: "Austin, Texas",
+                        value: "Austin, Texas",
 
-                        key: "AL",
+                        key: "Austin, Texas",
                       },
                       {
-                        label: "Alaska",
-                        value: "Alaska",
+                        label: "Houston, Texas",
+                        value: "Houston, Texas",
 
-                        key: "AK",
+                        key: "Houston, Texas",
                       },
                       {
-                        label: "American Samoa",
-                        value: "American Samoa",
+                        label: "Seattle, Washington",
+                        value: "Seattle, Washington",
 
-                        key: "AS",
-                      },
-                      {
-                        label: "Arizona",
-                        value: "Arizona",
-
-                        key: "AZ",
-                      },
-                      {
-                        label: "Arkansas",
-                        value: "Arkansas",
-
-                        key: "AR",
-                      },
-                      {
-                        label: "California",
-                        value: "California",
-
-                        key: "CA",
-                      },
-                      {
-                        label: "Colorado",
-                        value: "Colorado",
-
-                        key: "CO",
-                      },
-                      {
-                        label: "Connecticut",
-                        value: "Connecticut",
-
-                        key: "CT",
-                      },
-                      {
-                        label: "Delaware",
-                        value: "Delaware",
-
-                        key: "DE",
-                      },
-                      {
-                        label: "District Of Columbia",
-                        value: "District Of Columbia",
-
-                        key: "DC",
-                      },
-                      {
-                        label: "Federated States Of Micronesia",
-                        value: "Federated States Of Micronesia",
-
-                        key: "FM",
-                      },
-                      {
-                        label: "Florida",
-                        value: "Florida",
-
-                        key: "FL",
-                      },
-                      {
-                        label: "Georgia",
-                        value: "Georgia",
-
-                        key: "GA",
-                      },
-                      {
-                        label: "Guam",
-                        value: "Guam",
-
-                        key: "GU",
-                      },
-                      {
-                        label: "Hawaii",
-                        value: "Hawaii",
-
-                        key: "HI",
-                      },
-                      {
-                        label: "Idaho",
-                        value: "Idaho",
-
-                        key: "ID",
-                      },
-                      {
-                        label: "Illinois",
-                        value: "Illinois",
-
-                        key: "IL",
-                      },
-                      {
-                        label: "Indiana",
-                        value: "Indiana",
-
-                        key: "IN",
-                      },
-                      {
-                        label: "Iowa",
-                        value: "Iowa",
-
-                        key: "IA",
-                      },
-                      {
-                        label: "Kansas",
-                        value: "Kansas",
-
-                        key: "KS",
-                      },
-                      {
-                        label: "Kentucky",
-                        value: "Kentucky",
-
-                        key: "KY",
-                      },
-                      {
-                        label: "Louisiana",
-                        value: "Louisiana",
-
-                        key: "LA",
-                      },
-                      {
-                        label: "Maine",
-                        value: "Maine",
-
-                        key: "ME",
-                      },
-                      {
-                        label: "Marshall Islands",
-                        value: "Marshall Islands",
-
-                        key: "MH",
-                      },
-                      {
-                        label: "Maryland",
-                        value: "Maryland",
-
-                        key: "MD",
-                      },
-                      {
-                        label: "Massachusetts",
-                        value: "Massachusetts",
-
-                        key: "MA",
-                      },
-                      {
-                        label: "Michigan",
-                        value: "Michigan",
-
-                        key: "MI",
-                      },
-                      {
-                        label: "Minnesota",
-                        value: "Minnesota",
-
-                        key: "MN",
-                      },
-                      {
-                        label: "Mississippi",
-                        value: "Mississippi",
-
-                        key: "MS",
-                      },
-                      {
-                        label: "Missouri",
-                        value: "Missouri",
-
-                        key: "MO",
-                      },
-                      {
-                        label: "Montana",
-                        value: "Montana",
-
-                        key: "MT",
-                      },
-                      {
-                        label: "Nebraska",
-                        value: "Nebraska",
-
-                        key: "NE",
-                      },
-                      {
-                        label: "Nevada",
-                        value: "Nevada",
-
-                        key: "NV",
-                      },
-                      {
-                        label: "New Hampshire",
-                        value: "New Hampshire",
-
-                        key: "NH",
-                      },
-                      {
-                        label: "New Jersey",
-                        value: "New Jersey",
-
-                        key: "NJ",
-                      },
-                      {
-                        label: "New Mexico",
-                        value: "New Mexico",
-
-                        key: "NM",
-                      },
-                      {
-                        label: "New York",
-                        value: "New York",
-
-                        key: "NY",
-                      },
-                      {
-                        label: "North Carolina",
-                        value: "North Carolina",
-
-                        key: "NC",
-                      },
-                      {
-                        label: "North Dakota",
-                        value: "North Dakota",
-
-                        key: "ND",
-                      },
-                      {
-                        label: "Northern Mariana Islands",
-                        value: "Northern Mariana Islands",
-
-                        key: "MP",
-                      },
-                      {
-                        label: "Ohio",
-                        value: "Ohio",
-
-                        key: "OH",
-                      },
-                      {
-                        label: "Oklahoma",
-                        value: "Oklahoma",
-
-                        key: "OK",
-                      },
-                      {
-                        label: "Oregon",
-                        value: "Oregon",
-
-                        key: "OR",
-                      },
-                      {
-                        label: "Palau",
-                        value: "Palau",
-
-                        key: "PW",
-                      },
-                      {
-                        label: "Pennsylvania",
-                        value: "Pennsylvania",
-
-                        key: "PA",
-                      },
-                      {
-                        label: "Puerto Rico",
-                        value: "Puerto Rico",
-
-                        key: "PR",
-                      },
-                      {
-                        label: "Rhode Island",
-                        value: "Rhode Island",
-
-                        key: "RI",
-                      },
-                      {
-                        label: "South Carolina",
-                        value: "South Carolina",
-
-                        key: "SC",
-                      },
-                      {
-                        label: "South Dakota",
-                        value: "South Dakota",
-
-                        key: "SD",
-                      },
-                      {
-                        label: "Tennessee",
-                        value: "Tennessee",
-
-                        key: "TN",
-                      },
-                      {
-                        label: "Texas",
-                        value: "Texas",
-
-                        key: "TX",
-                      },
-                      {
-                        label: "Utah",
-                        value: "Utah",
-
-                        key: "UT",
-                      },
-                      {
-                        label: "Vermont",
-                        value: "Vermont",
-
-                        key: "VT",
-                      },
-                      {
-                        label: "Virgin Islands",
-                        value: "Virgin Islands",
-
-                        key: "VI",
-                      },
-                      {
-                        label: "Virginia",
-                        value: "Virginia",
-
-                        key: "VA",
-                      },
-                      {
-                        label: "Washington",
-                        value: "Washington",
-
-                        key: "WA",
-                      },
-                      {
-                        label: "West Virginia",
-                        value: "West Virginia",
-
-                        key: "WV",
-                      },
-                      {
-                        label: "Wisconsin",
-                        value: "Wisconsin",
-
-                        key: "WI",
-                      },
-                      {
-                        label: "Wyoming",
-                        value: "Wyoming",
-
-                        key: "WY",
+                        key: "Seattle, Washington",
                       },
                     ]}
                   />
@@ -1651,11 +1390,15 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
         <View
           style={{
             position: "absolute",
-            bottom: -4,
+            top: 0,
             backgroundColor: "white",
             width: "100%",
             flex: 1,
-            height: 80,
+            height: 55,
+            flexDirection: "row",
+            paddingLeft: 10,
+            paddingRight: 10,
+            paddingBottom: 10,
           }}
         >
           <View style={styles.ButtonRowNew1}>
@@ -1871,6 +1614,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     backgroundColor: "#f5f5f5",
     paddingBottom: 100,
+    marginTop: 60,
   },
   MetaRow: {
     padding: 10,
@@ -1929,15 +1673,12 @@ const styles = StyleSheet.create({
   },
   ButtonRowNew1: {
     textAlign: "center",
-    width: "100%",
-    display: "flex",
     flex: 1,
   },
   ButtonRowNew: {
     textAlign: "center",
     // marginBottom: 15,
     width: "100%",
-    display: "flex",
     flex: 1,
   },
   SaveButton: {
@@ -1958,7 +1699,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     flex: 1,
-    padding: 20,
   },
   SaveButtonNew2: {
     backgroundColor: "salmon",
@@ -1970,7 +1710,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     flex: 1,
-    padding: 20,
   },
   SaveButton2: {
     backgroundColor: "salmon",
@@ -1983,6 +1722,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "yellow",
     textAlign: "center",
+    marginTop: 15,
   },
   MetaTitleTextView: {
     display: "flex",
