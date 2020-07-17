@@ -2,6 +2,7 @@ import React, { useState, useEffect, Component } from "react";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import RNPickerSelect from "react-native-picker-select";
 import { CheckBox } from "react-native-elements";
+import Counter from "./Counter";
 import {
   SafeAreaView,
   StyleSheet,
@@ -23,7 +24,13 @@ import {
   Animated,
 } from "react-native";
 
-function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
+function QueueMeta({
+  queueData,
+  userObj,
+  editing,
+  updateQueueMeta,
+  updateQueueCount,
+}) {
   const [title, setTitle] = useState(queueData.title);
   const [message, setMessage] = useState(queueData.message);
   const [city, setCity] = useState(queueData.city);
@@ -1425,7 +1432,35 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
     );
   } else {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+        <View
+          style={{
+            height: 60,
+            flexDirection: "row",
+            paddingLeft: 10,
+            paddingRight: 10,
+            paddingBottom: 15,
+            backgroundColor: "white",
+          }}
+        >
+          <View style={styles.ButtonRowNew}>
+            {!checkDirty() ? (
+              <TouchableOpacity
+                style={styles.SaveButtonNew}
+                onPress={() => update()}
+              >
+                <Text style={styles.SaveButtonText}>Update</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.SaveButtonNew2}
+                onPress={() => update()}
+              >
+                <Text style={styles.SaveButtonText}>Update</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
         <KeyboardAvoidingView
           enabled
           style={{ flex: 1 }}
@@ -1433,152 +1468,96 @@ function QueueMeta({ queueData, userObj, editing, updateQueueMeta }) {
           behavior="padding"
         >
           <ScrollView>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-              <View style={styles.MetaContainer}>
-                <View style={styles.MetaRow}>
-                  <View style={{ paddingRight: 20, paddingLeft: 20 }}>
-                    <Text style={styles.MetaTitleText}>Business Message</Text>
-                    {/* <Text style={styles.MetaData}>{queueData.message}</Text> */}
-                    <TextInput
-                      style={styles.MetaDataParagraphInput}
-                      defaultValue={message}
-                      multiline
-                      numberOfLines={3}
-                      onChangeText={(value) => setMessage(value)}
-                    ></TextInput>
+            <View style={{ marginTop: 5 }}>
+              <Text style={styles.titleText}>{queueData.title}</Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <Counter count={count} updateQueueCount={updateQueueCount} />
+              </View>
+            </View>
+            <View style={styles.MetaRow}>
+              <View style={{ paddingRight: 20, paddingLeft: 20 }}>
+                <Text style={styles.MetaTitleText}>Business Message</Text>
+                {/* <Text style={styles.MetaData}>{queueData.message}</Text> */}
+                <TextInput
+                  style={styles.MetaDataParagraphInput}
+                  defaultValue={message}
+                  multiline
+                  numberOfLines={3}
+                  onChangeText={(value) => setMessage(value)}
+                ></TextInput>
+              </View>
+            </View>
+            <View
+              style={{
+                marginTop: 20,
+                marginBottom: 5,
+                padding: 30,
+                paddingBottom: 0,
+                paddingTop: 0,
+                backgroundColor: "white",
+                // height: 90,
+              }}
+            >
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  height: 90,
+                }}
+              >
+                <View style={styles.MetaTitleTextView}>
+                  <Text style={styles.MetaTitleText}>Active</Text>
+                  <View style={styles.MetaTitleTextSMFlex}>
+                    <Text>
+                      Determines if business visible to queue members.
+                    </Text>
                   </View>
-                  {/* <View style={styles.ButtonRow}>
-              {!checkDirty() ? (
-                <TouchableOpacity
-                  style={styles.SaveButton}
-                  onPress={() => update()}
-                >
-                  <Text style={styles.SaveButtonText}>Update</Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  style={styles.SaveButton2}
-                  onPress={() => update()}
-                >
-                  <Text style={styles.SaveButtonText}>Update</Text>
-                </TouchableOpacity>
-              )}
-            </View> */}
                 </View>
                 <View
                   style={{
+                    flex: 1,
+                    padding: 20,
+                    paddingTop: 15,
+                    borderRadius: 9,
+                    height: 90,
+                    display: "flex",
+                    flexDirection: "row",
+                    alignContent: "center",
+                    justifyContent: "flex-end",
                     marginTop: 20,
-                    marginBottom: 5,
-                    padding: 30,
-                    paddingBottom: 0,
-                    paddingTop: 0,
-                    backgroundColor: "white",
-                    // height: 90,
                   }}
                 >
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      height: 90,
-                    }}
-                  >
-                    <View style={styles.MetaTitleTextView}>
-                      <Text style={styles.MetaTitleText}>Active</Text>
-                      <View style={styles.MetaTitleTextSMFlex}>
-                        <Text>
-                          Determines if business visible to queue members.
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flex: 1,
-                        padding: 20,
-                        paddingTop: 15,
-                        borderRadius: 9,
-                        height: 90,
-                        display: "flex",
-                        flexDirection: "row",
-                        alignContent: "center",
-                        justifyContent: "flex-end",
-                        marginTop: 20,
-                      }}
-                    >
-                      <RNPickerSelect
-                        textStyle={{ color: "#5cb85c" }}
-                        style={{ ...pickerSelectStyles }}
-                        onValueChange={(value) => setactive(value)}
-                        value={active}
-                        items={[
-                          {
-                            label: "Yes",
-                            value: true,
+                  <RNPickerSelect
+                    textStyle={{ color: "#5cb85c" }}
+                    style={{ ...pickerSelectStyles }}
+                    onValueChange={(value) => setactive(value)}
+                    value={active}
+                    items={[
+                      {
+                        label: "Yes",
+                        value: true,
 
-                            key: "true55",
-                          },
-                          {
-                            label: "No",
-                            value: false,
+                        key: "true55",
+                      },
+                      {
+                        label: "No",
+                        value: false,
 
-                            key: "false55",
-                          },
-                        ]}
-                      />
-                    </View>
-                  </View>
-                  {/* <View style={styles.ButtonRowB}>
-              {!checkDirty() ? (
-                <TouchableOpacity
-                  style={styles.SaveButton}
-                  onPress={() => update()}
-                >
-                  <Text style={styles.SaveButtonText}>Update</Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  style={styles.SaveButton2}
-                  onPress={() => update()}
-                >
-                  <Text style={styles.SaveButtonText}>Update</Text>
-                </TouchableOpacity>
-              )}
-            </View> */}
+                        key: "false55",
+                      },
+                    ]}
+                  />
                 </View>
               </View>
-            </TouchableWithoutFeedback>
+            </View>
           </ScrollView>
         </KeyboardAvoidingView>
-        <View
-          style={{
-            position: "absolute",
-            top: "100%",
-            backgroundColor: "white",
-            width: "100%",
-            flex: 1,
-            height: 80,
-          }}
-        >
-          <View style={styles.ButtonRowNew1}>
-            <View style={styles.ButtonRowNew}>
-              {!checkDirty() ? (
-                <TouchableOpacity
-                  style={styles.SaveButtonNew}
-                  onPress={() => update()}
-                >
-                  <Text style={styles.SaveButtonText}>Update</Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  style={styles.SaveButtonNew2}
-                  onPress={() => update()}
-                >
-                  <Text style={styles.SaveButtonText}>Update</Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          </View>
-        </View>
       </View>
     );
   }
@@ -1830,9 +1809,9 @@ const styles = StyleSheet.create({
   titleText: {
     fontWeight: "200",
     marginBottom: 10,
-    paddingLeft: 50,
+    // paddingLeft: 50,
     fontSize: 25,
     color: "#121212",
-    // textAlign: "center",
+    textAlign: "center",
   },
 });

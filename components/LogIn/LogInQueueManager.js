@@ -45,6 +45,7 @@ function LogInQueueManager({ logIn, toggleLogInSignUp, callResetPassword }) {
               placeholder="Email"
               defaultValue={username}
               onChangeText={(value) => setUsername(value)}
+              secureTextEntry={false}
             />
           </View>
           <View style={styles.logInFieldBtnContainer}>
@@ -88,6 +89,7 @@ function LogInQueueManager({ logIn, toggleLogInSignUp, callResetPassword }) {
               textContentType={"emailAddress"}
               autoCompleteType={"email"}
               keyboardType={"email-address"}
+              secureTextEntry={false}
             />
           </View>
           <View style={styles.logInFieldTextContainer}>
