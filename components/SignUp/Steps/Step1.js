@@ -76,7 +76,14 @@ function Step1({
         <View style={styles.signUpFieldTextContainer}>
           <TouchableOpacity style={styles.signInBtn} onPress={forwardState}>
             <Text style={{ textAlign: "center", color: "yellow" }}>
-              Create account
+              Continue
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.signUpFieldTextContainer}>
+          <TouchableOpacity style={styles.signInBtnNull} onPress={forwardState}>
+            <Text style={{ textAlign: "center", color: "#ccc" }}>
+              Step 1 of 2
             </Text>
           </TouchableOpacity>
         </View>
@@ -138,6 +145,18 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     width: "100%",
     backgroundColor: "#87c8e0",
+  },
+  signInBtnNull: {
+    borderColor: "white",
+    borderStyle: "solid",
+    borderWidth: 1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 15,
+    paddingLeft: 15,
+    borderRadius: 9,
+    width: "100%",
+    backgroundColor: "white",
   },
   logInBtn: {
     borderColor: "transparent",

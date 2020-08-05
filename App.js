@@ -29,6 +29,7 @@ export default class App extends Component {
 
   storeLoginState = async () => {
     try {
+      await this.setState({ showSettings: false });
       const jsonValue = JSON.stringify(this.state);
       await AsyncStorage.setItem("@loginState_key", jsonValue);
     } catch (e) {
@@ -47,7 +48,6 @@ export default class App extends Component {
   };
 
   resetPassword = (username) => {
-    console.log(username);
     return new Promise(async (res, rej) => {
       try {
         let { data } = await Axios.post(
@@ -62,7 +62,6 @@ export default class App extends Component {
           alert("User Not Found");
         }
       } catch (e) {
-        console.log(e);
         alert("System Error");
       }
     });

@@ -138,6 +138,13 @@ function Step2({
             </TouchableOpacity>
           </View>
         </View>
+        <View style={styles.signUpFieldTextContainer}>
+          <TouchableOpacity style={styles.signInBtnNull} onPress={forwardState}>
+            <Text style={{ textAlign: "center", color: "#ccc" }}>
+              Step 2 of 2
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -213,5 +220,17 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     fontSize: 20,
+  },
+  signInBtnNull: {
+    borderColor: "white",
+    borderStyle: "solid",
+    borderWidth: 1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 15,
+    paddingLeft: 15,
+    borderRadius: 9,
+    width: "100%",
+    backgroundColor: "white",
   },
 });

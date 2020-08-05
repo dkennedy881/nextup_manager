@@ -189,7 +189,6 @@ class SignUpQueueManager extends Component {
       city,
       ...rest
     } = this.state;
-    // console.log(rest);
     for (let key in rest) {
       if (!rest[key]) return false;
     }

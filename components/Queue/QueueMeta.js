@@ -135,10 +135,6 @@ function QueueMeta({
       saturday: saturday,
       sunday: sunday,
     };
-    // console.log(newObj);
-    // console.log(og);
-    // console.log("_________________________");
-    // return JSON.stringify(og) !== JSON.stringify(newObj);
 
     let isDirty = false;
     Reflect.ownKeys(og).forEach((k) => {
@@ -149,7 +145,6 @@ function QueueMeta({
       } else {
         Reflect.ownKeys(og[k]).forEach((kNested) => {
           if (og[k][kNested] !== newObj[k][kNested]) {
-            console.log(og[k][kNested]);
             isDirty = true;
           }
         });
@@ -177,6 +172,7 @@ function QueueMeta({
 
   async function update() {
     setShowSaving(true);
+    Keyboard.dismiss();
 
     await updateQueueMeta({
       id,
