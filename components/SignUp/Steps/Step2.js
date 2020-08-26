@@ -34,7 +34,9 @@ function Step2({
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.signUpContainer}>
-        <Text style={styles.signUpTitleText}>Account Created!</Text>
+        <Text style={styles.signUpTitleText}>
+          Tell us about your business...
+        </Text>
         {/* <Text style={styles.signUpTitleText}>
           Please enter additional business information. All fields are required.
         </Text> */}
@@ -129,7 +131,7 @@ function Step2({
         <View style={styles.signUpFieldBtnContainer}>
           <View style={styles.signUpFieldBtnContainer}>
             <TouchableOpacity onPress={forwardState} style={styles.signInBtn}>
-              <Text style={{ color: "yellow" }}>Create Account</Text>
+              <Text style={{ color: "yellow" }}>Create Profile</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.signUpFieldBtnContainer}>

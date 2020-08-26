@@ -99,7 +99,7 @@ function Step1({
         <View style={styles.signUpFieldTextContainer}>
           <TouchableOpacity style={styles.logInBtn} onPress={toggleLogInSignUp}>
             <Text style={{ textAlign: "center", color: "black" }}>
-              Already have an account?{" "}
+              Already a partner?{" "}
               <Text style={{ color: "#87c8e0" }}>Sign In</Text>
             </Text>
           </TouchableOpacity>
