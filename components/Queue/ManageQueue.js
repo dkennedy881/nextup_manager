@@ -38,7 +38,8 @@ class ManageQueue extends Component {
 
     queueData.count = count;
 
-    updateUserQueue(queueData);
+    await updateUserQueue(queueData);
+    // this.setState({ queueData });
   };
 
   updateQueueMeta = async (queueData) => {
@@ -53,7 +54,7 @@ class ManageQueue extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let { queueData, showSettings } = nextProps;
-    // alert(queueData.active);
+
     if (queueData) {
       return {
         queueData,
@@ -81,49 +82,6 @@ class ManageQueue extends Component {
         );
       } else {
         return (
-          // <KeyboardAvoidingView
-          //   style={{
-          //     flex: 1,
-          //     flexDirection: "column",
-          //     justifyContent: "center",
-          //   }}
-          //   behavior="padding"
-          //   enabled
-          // >
-          //   <ScrollView style={styles.ManageQueueContainer}>
-          //     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          //       <View>
-          //         <Text style={styles.titleText}>{queueData.title}</Text>
-          //         <View
-          //           style={{
-          //             display: "flex",
-          //             flexDirection: "row",
-          //             justifyContent: "center",
-          //           }}
-          //         >
-          //           <Counter
-          //             count={queueData.count}
-          //             updateQueueCount={updateQueueCount}
-          //           />
-          //         </View>
-          //         <View
-          //           style={{
-          //             display: "flex",
-          //             marginTop: 50,
-          //             paddingBottom: 100,
-          //           }}
-          //         >
-          //           <QueueMeta
-          //             editing={false}
-          //             queueData={queueData}
-          //             userObj={userObj}
-          //             updateQueueMeta={updateQueueMeta}
-          //           />
-          //         </View>
-          //       </View>
-          //     </TouchableWithoutFeedback>
-          //   </ScrollView>
-          // </KeyboardAvoidingView>
           <QueueMeta
             editing={false}
             queueData={queueData}

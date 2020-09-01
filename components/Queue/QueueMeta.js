@@ -105,6 +105,10 @@ function QueueMeta({
     sunday: sunday,
   });
 
+  useEffect(() => {
+    setCount(queueData.count);
+  });
+
   const preSetState = (val) => {
     if (val) {
       const city = val.split(",")[0].trim();
@@ -1760,8 +1764,8 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     marginTop: 5,
     marginBottom: 5,
-    paddingLeft: 10,
     width: 60,
+    textAlign: "center",
   },
   MetaDataParagraphInput: {
     borderStyle: "solid",

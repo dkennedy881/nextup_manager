@@ -82,15 +82,14 @@ class Counter extends Component {
       >
         {parseInt(count) === parseInt(setCounter) ? (
           <View style={styles.countTextContainer}>
-            <TextInput
-              keyboardType={"numeric"}
+            <Text
               style={styles.countText}
               onChangeText={(count) => {
                 updateTextInput(count);
               }}
             >
               {count}
-            </TextInput>
+            </Text>
           </View>
         ) : (
           <View style={styles.countTextContainer2}>
