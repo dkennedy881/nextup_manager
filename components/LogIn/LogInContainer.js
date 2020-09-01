@@ -19,9 +19,14 @@ import LogInQueueMember from "./LogInQueueMember";
 import LogInQueueManager from "./LogInQueueManager";
 
 class LogInContainer extends Component {
-  logIn = (phoneNumber, password) => {
+  logIn = (username, password) => {
     const { toggleLogIn } = this.props;
-    toggleLogIn(phoneNumber, password);
+    toggleLogIn(username, password);
+  };
+
+  callResetPassword = async (username) => {
+    const { resetPassword } = this.props;
+    return await resetPassword(username);
   };
 
   render() {
@@ -54,6 +59,7 @@ class LogInContainer extends Component {
               <LogInQueueManager
                 logIn={this.logIn}
                 toggleLogInSignUp={toggleLogInSignUp}
+                callResetPassword={this.callResetPassword}
               />
             </View>
           </KeyboardAvoidingView>
@@ -65,8 +71,8 @@ class LogInContainer extends Component {
 
 const styles = StyleSheet.create({
   logInContainer: {
-    padding: 30,
-    alignSelf: "stretch",
+    // padding: 30,
+    // alignSelf: "stretch",
     overflow: "hidden",
   },
 });

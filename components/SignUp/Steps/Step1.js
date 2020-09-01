@@ -18,66 +18,90 @@ import {
 function Step1({
   forwardState,
   toggleLogInSignUp,
-  updatePhoneNumber,
-  phoneNumber,
   updateName,
   name,
   password,
   passwordValidate,
   updatePassword,
   updatePasswordValidate,
+  username,
+  updateUsername,
 }) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View>
-        <Text style={styles.signUpTitleText}>Sign Up</Text>
+        <Text style={styles.signUpTitleText}>Let's get started...</Text>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Business Name: </Text>
+          {/* <Text style={styles.signUpFieldText}>Business Name</Text> */}
           <TextInput
             value={name}
             style={styles.inputField}
             onChangeText={(text) => updateName(text)}
-            placeholder="Awesome Business"
+            placeholder="Business Name"
+            textContentType={"organizationName"}
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Phone Number: </Text>
+          {/* <Text style={styles.signUpFieldText}>Email</Text> */}
           <TextInput
-            value={phoneNumber}
+            value={username}
             style={styles.inputField}
-            onChangeText={(text) => updatePhoneNumber(text)}
-            placeholder="Phone Number"
+            onChangeText={(text) => updateUsername(text)}
+            placeholder="Email"
+            textContentType={"emailAddress"}
+            autoCompleteType={"email"}
+            keyboardType={"email-address"}
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Password: </Text>
+          {/* <Text style={styles.signUpFieldText}>Password</Text> */}
           <TextInput
             value={password}
             style={styles.inputField}
             onChangeText={(text) => updatePassword(text)}
-            placeholder="Account Password"
+            placeholder="Password"
+            secureTextEntry={true}
           />
         </View>
         <View style={styles.signUpFieldTextContainer}>
-          <Text style={styles.signUpFieldText}>Re-enter Password: </Text>
+          {/* <Text style={styles.signUpFieldText}>Re-enter Password</Text> */}
           <TextInput
             value={passwordValidate}
             style={styles.inputField}
             onChangeText={(text) => updatePasswordValidate(text)}
-            placeholder="Re-enter Account Password"
+            placeholder="Re-enter Password"
+            secureTextEntry={true}
           />
         </View>
-        <View style={styles.signUpFieldBtnContainer}>
+        <View style={styles.signUpFieldTextContainer}>
           <TouchableOpacity style={styles.signInBtn} onPress={forwardState}>
-            <Text>Verify Account</Text>
+            <Text style={{ textAlign: "center", color: "yellow" }}>
+              Continue
+            </Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.signUpFieldBtnContainer}>
-          <TouchableOpacity
-            style={styles.forgotPasswordBtn}
-            onPress={toggleLogInSignUp}
-          >
-            <Text>Already have an account? Sign Up</Text>
+        <View style={styles.signUpFieldTextContainer}>
+          <TouchableOpacity style={styles.signInBtnNull} onPress={forwardState}>
+            <Text style={{ textAlign: "center", color: "#ccc" }}>
+              Step 1 of 2
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.signUpFieldTextContainer}>
+          <View
+            style={{
+              width: "100%",
+              borderColor: "#eee",
+              borderBottomWidth: 1,
+            }}
+          ></View>
+        </View>
+        <View style={styles.signUpFieldTextContainer}>
+          <TouchableOpacity style={styles.logInBtn} onPress={toggleLogInSignUp}>
+            <Text style={{ textAlign: "center", color: "black" }}>
+              Already a partner?{" "}
+              <Text style={{ color: "#87c8e0" }}>Sign In</Text>
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -89,9 +113,6 @@ export default Step1;
 
 const styles = StyleSheet.create({
   signUpContainer: {
-    borderColor: "#eeee",
-    borderStyle: "solid",
-    borderWidth: 1,
     padding: 30,
   },
   signUpSimpleText: {
@@ -122,6 +143,32 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingLeft: 15,
     borderRadius: 9,
+    width: "100%",
+    backgroundColor: "#87c8e0",
+  },
+  signInBtnNull: {
+    borderColor: "white",
+    borderStyle: "solid",
+    borderWidth: 1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 15,
+    paddingLeft: 15,
+    borderRadius: 9,
+    width: "100%",
+    backgroundColor: "white",
+  },
+  logInBtn: {
+    borderColor: "transparent",
+    borderStyle: "solid",
+    borderWidth: 1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 15,
+    paddingLeft: 15,
+    borderRadius: 9,
+    width: "100%",
+    // backgroundColor: "salmon",
   },
   forgotPasswordBtn: {
     paddingTop: 10,
@@ -131,16 +178,18 @@ const styles = StyleSheet.create({
   },
   signUpTitleText: {
     fontSize: 25,
+    textAlign: "center",
   },
   signUpFieldText: {
     fontSize: 15,
+    marginRight: 10,
   },
   inputField: {
     flex: 1,
     borderWidth: 0.5,
-    borderTopColor: "transparent",
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: "#cccc",
+    borderColor: "#cccc",
+    height: 50,
+    padding: 10,
+    fontSize: 20,
   },
 });

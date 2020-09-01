@@ -1,7 +1,6 @@
 import React, { useState, Component } from "react";
 
 //comps
-import Counter from "./Counter";
 import QueueMeta from "./QueueMeta";
 
 import {
@@ -16,6 +15,7 @@ import {
   ListItem,
   ImageBackground,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
 } from "react-native";
@@ -38,13 +38,18 @@ class ManageQueue extends Component {
 
     queueData.count = count;
 
-    updateUserQueue(queueData);
+    await updateUserQueue(queueData);
+    // this.setState({ queueData });
   };
 
   updateQueueMeta = async (queueData) => {
     let { updateUserQueue } = this.props;
+    let { queueData: withCount } = this.state;
+    queueData.count = withCount.count;
+
     //update the app.js state
-    updateUserQueue(queueData);
+    await updateUserQueue(queueData);
+    return;
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -77,19 +82,14 @@ class ManageQueue extends Component {
         );
       } else {
         return (
-          <ScrollView>
-            <View style={styles.ManageQueueContainer}>
-              <Counter
-                count={queueData.count}
-                updateQueueCount={updateQueueCount}
-              />
-              <QueueMeta
-                editing={false}
-                queueData={queueData}
-                userObj={userObj}
-              />
-            </View>
-          </ScrollView>
+          <QueueMeta
+            editing={false}
+            queueData={queueData}
+            userObj={userObj}
+            updateQueueMeta={updateQueueMeta}
+            count={queueData.count}
+            updateQueueCount={updateQueueCount}
+          />
         );
       }
     } else {
@@ -106,9 +106,16 @@ export default ManageQueue;
 
 const styles = StyleSheet.create({
   ManageQueueContainer: {
-    height: "100%",
-    marginTop: 80,
-    alignItems: "center",
+    flex: 1,
+    paddingTop: 50,
+    backgroundColor: "#f5f5f5",
+  },
+  titleText: {
+    fontWeight: "200",
+    marginBottom: 10,
+    fontSize: 35,
+    color: "#121212",
+    textAlign: "center",
   },
 });
 

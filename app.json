@@ -7,7 +7,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.1",
+    "version": "1.4.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,7 +25,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "nextup"
     },
-    "description": "Build for the first testing suit.",
+    "description": "release 1.4.1",
     "githubUrl": "https://github.com/dkennedy881/nextup_manager"
   }
 }

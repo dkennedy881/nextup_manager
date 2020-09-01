@@ -15,8 +15,17 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+const confirmFunct = () => {
+  return confirm("Are you sure you want to log out ?");
+};
 function HeaderContainer({ queueMember, toggleSettings, toggleLogIn }) {
   const [showSettings, setShowSettings] = useState(false);
+
+  const logOutConfirm = function () {
+    if (confirmFunct()) {
+      toggleLogIn();
+    }
+  };
 
   function doToggleSettings() {
     toggleSettings();
@@ -53,16 +62,11 @@ function HeaderContainer({ queueMember, toggleSettings, toggleLogIn }) {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                top: 10,
+                top: 18,
                 left: 10,
               }}
             >
-              <Icon
-                name={"power-off"}
-                type="font-awesome"
-                color="#6da8bd"
-                size={30}
-              />
+              <Text style={{ color: "#6da8bd" }}>Logout</Text>
             </View>
           </TouchableOpacity>
           <View style={styles.TitleContainer}>

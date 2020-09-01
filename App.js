@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   Image,
   TouchableWithoutFeedback,
   Keyboard,
+  AppState,
+  StatusBar,
 } from "react-native";
 import Axios from "axios";
+import AsyncStorage from "@react-native-community/async-storage";
 
 //comps
 import HeaderContainer from "./components/Header/HeaderContainer";
@@ -19,17 +21,57 @@ import LogInContainer from "./components/LogIn/LogInContainer";
 export default class App extends Component {
   state = {
     isLoggedIn: false,
-    isSignedUp: true,
+    isSignedUp: false,
     userObj: false,
     queueData: false,
     showSettings: false,
+  };
+
+  storeLoginState = async () => {
+    try {
+      await this.setState({ showSettings: false });
+      const jsonValue = JSON.stringify(this.state);
+      await AsyncStorage.setItem("@loginState_key", jsonValue);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  getLoginState = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("@loginState_key");
+      return jsonValue ? jsonValue : null;
+    } catch (e) {
+      // error reading value
+      return null;
+    }
+  };
+
+  resetPassword = (username) => {
+    return new Promise(async (res, rej) => {
+      try {
+        let { data } = await Axios.post(
+          "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/sendNewPassword/incoming_webhook/webhook0",
+          {
+            username: String(username).toLocaleLowerCase(),
+          }
+        );
+        if (data) {
+          res(data);
+        } else {
+          alert("User Not Found");
+        }
+      } catch (e) {
+        alert("System Error");
+      }
+    });
   };
 
   toggleSettings = () => {
     this.setState({ showSettings: !this.state.showSettings });
   };
 
-  toggleLogIn = async (phoneNumber, password) => {
+  toggleLogIn = async (username, password) => {
     let { isLoggedIn, userObj, queueData } = this.state;
 
     if (isLoggedIn) {
@@ -38,13 +80,16 @@ export default class App extends Component {
         userObj: false,
         queueData: false,
         isLoggedIn: !isLoggedIn,
-        isSignedUp: true,
+        isSignedUp: false,
         showSettings: false,
       }));
     } else {
       //1. use params for log in
       try {
-        userObj = await this.logIn(phoneNumber, password);
+        userObj = await this.logIn(
+          username.toLocaleLowerCase().trim(),
+          password
+        );
       } catch (e) {
         alert(e);
         return;
@@ -54,21 +99,30 @@ export default class App extends Component {
         userObj,
         isLoggedIn: !isLoggedIn,
       }));
-
+      // TODO add username
       try {
         queueData = await this.getQueueData(userObj.id["$numberLong"]);
         let newJSON = {
           title: queueData.title,
           message: queueData.message,
-          hours: {
-            open: queueData.open,
-            close: queueData.close,
-          },
           active: queueData.active,
           count: queueData.count["$numberLong"],
           id: queueData.id["$numberLong"],
           address: queueData.address,
           zipCode: queueData.zipCode,
+          city: queueData.city,
+          state: queueData.state,
+          mask: queueData.mask,
+          sani: queueData.sani,
+          maxCount: queueData.maxCount["$numberLong"],
+          businessNumber: queueData.businessNumber,
+          monday: queueData.monday,
+          tuesday: queueData.tuesday,
+          wednesday: queueData.wednesday,
+          thursday: queueData.thursday,
+          friday: queueData.friday,
+          saturday: queueData.saturday,
+          sunday: queueData.sunday,
         };
         queueData = newJSON;
       } catch (e) {
@@ -81,15 +135,17 @@ export default class App extends Component {
         queueData,
       }));
     }
+    this.storeLoginState();
   };
 
-  logIn = (phoneNumber, password) => {
+  // TODO use username instead of phonenumber
+  logIn = (username, password) => {
     return new Promise(async (res, rej) => {
       try {
         let { data } = await Axios.post(
           "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/logInQueueManager/incoming_webhook/webhook0",
           {
-            phoneNumber: String(phoneNumber),
+            username: String(username).toLocaleLowerCase(),
             password: String(password),
           }
         );
@@ -125,44 +181,80 @@ export default class App extends Component {
     });
   };
 
+  // TODO add phonenumber
   updateUserQueue = ({
     title,
     message,
-    hours,
     count,
     active,
     id,
     address,
     zipCode,
+    city,
+    state,
+    mask,
+    sani,
+    maxCount,
+    businessNumber,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
   }) => {
     return new Promise(async (res, rej) => {
+      // return;
+      // TODO add phonenumber
       try {
         let { data: queueData } = await Axios.post(
           "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/nextup-ssnrm/service/updateUserQueue/incoming_webhook/webhook0",
           {
             title: title,
             message: message,
-            open: hours.open,
-            close: hours.close,
             count: parseInt(count),
             active: active,
             id: parseInt(id),
             address: address,
             zipCode: zipCode,
+            city: city,
+            state: state,
+            mask: mask,
+            sani: sani,
+            maxCount: parseInt(maxCount),
+            businessNumber: businessNumber,
+            monday,
+            tuesday,
+            wednesday,
+            thursday,
+            friday,
+            saturday,
+            sunday,
           }
         );
+        // return;
         let newJSON = {
           title: queueData.title,
           message: queueData.message,
-          hours: {
-            open: queueData.open,
-            close: queueData.close,
-          },
-          active: queueData.active,
+          active: active,
           count: queueData.count["$numberLong"],
           id: queueData.id["$numberLong"],
-          address: queueData.address,
-          zipCode: queueData.zipCode,
+          address: address,
+          zipCode: zipCode,
+          city: city,
+          state: state,
+          mask: mask,
+          sani: sani,
+          maxCount: queueData.maxCount["$numberLong"],
+          businessNumber: businessNumber,
+          monday: queueData.monday,
+          tuesday: queueData.tuesday,
+          wednesday: queueData.wednesday,
+          thursday: queueData.thursday,
+          friday: queueData.friday,
+          saturday: queueData.saturday,
+          sunday: queueData.sunday,
         };
         queueData = newJSON;
 
@@ -180,6 +272,25 @@ export default class App extends Component {
     this.setState({ isSignedUp: !this.state.isSignedUp });
   };
 
+  async componentDidMount() {
+    let oldState = await this.getLoginState();
+    if (oldState) {
+      oldState = JSON.parse(oldState);
+      this.setState(oldState);
+    }
+    AppState.addEventListener("change", this.handleAppStateChange);
+  }
+
+  async componentWillUnmount() {
+    this.storeLoginState();
+  }
+
+  handleAppStateChange = (nextAppState) => {
+    if (nextAppState === "inactive" || nextAppState === "background") {
+      this.storeLoginState();
+    }
+  };
+
   render() {
     let {
       isLoggedIn,
@@ -193,6 +304,7 @@ export default class App extends Component {
       toggleLogInSignUp,
       toggleSettings,
       updateUserQueue,
+      resetPassword,
     } = this;
 
     if (isLoggedIn)
@@ -219,15 +331,22 @@ export default class App extends Component {
             isSignedUp={isSignedUp}
             toggleLogIn={toggleLogIn}
             toggleLogInSignUp={toggleLogInSignUp}
+            resetPassword={resetPassword}
           ></DisplayLogInSignUp>
         </TouchableWithoutFeedback>
       );
   }
 }
 
-function DisplayLogInSignUp({ isSignedUp, toggleLogIn, toggleLogInSignUp }) {
+function DisplayLogInSignUp({
+  isSignedUp,
+  toggleLogIn,
+  toggleLogInSignUp,
+  resetPassword,
+}) {
   return (
     <View style={styles.loginSignUpContainer}>
+      <StatusBar translucent barStyle="dark-content" />
       <View
         style={{
           display: "flex",
@@ -249,6 +368,7 @@ function DisplayLogInSignUp({ isSignedUp, toggleLogIn, toggleLogInSignUp }) {
           queueMember={false}
           toggleLogIn={toggleLogIn}
           toggleLogInSignUp={toggleLogInSignUp}
+          resetPassword={resetPassword}
         />
       ) : (
         <SignUpContainer
@@ -264,12 +384,12 @@ function DisplayLogInSignUp({ isSignedUp, toggleLogIn, toggleLogInSignUp }) {
 const styles = StyleSheet.create({
   loginSignUpContainer: {
     margin: 20,
-    alignContent: "center",
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "center", //flexes items to the center
+    // alignItems: "center", makes the width of the content smaller
   },
   loggedInContainer: {
     flex: 1,
+    display: "flex",
   },
 });
