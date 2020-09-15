@@ -45,6 +45,11 @@ function QueueMeta({
       ? queueData.maxCount["$numberLong"]
       : queueData.maxCount
   );
+  const [stationCount, setStationCount] = useState(
+    typeof queueData.stationCount === "object"
+      ? queueData.stationCount["$numberLong"]
+      : queueData.stationCount
+  );
   const [businessNumber, setBusinessNumber] = useState(
     queueData.businessNumber
   );
@@ -93,6 +98,7 @@ function QueueMeta({
     mask,
     sani,
     maxCount,
+    stationCount,
     businessNumber,
     address,
     zipCode,
@@ -128,6 +134,7 @@ function QueueMeta({
       mask,
       sani,
       maxCount,
+      stationCount,
       businessNumber,
       address,
       zipCode,
@@ -191,6 +198,7 @@ function QueueMeta({
       mask,
       sani,
       maxCount,
+      stationCount,
       businessNumber,
       monday,
       tuesday,
@@ -210,6 +218,7 @@ function QueueMeta({
       mask,
       sani,
       maxCount,
+      stationCount,
       businessNumber,
       address,
       zipCode,
@@ -368,7 +377,6 @@ function QueueMeta({
                   />
                 </View>
               </View>
-
               <View
                 style={{
                   marginTop: 5,
@@ -408,6 +416,7 @@ function QueueMeta({
                   ></TextInput>
                 </View>
               </View>
+
               <Text style={styles.titleText}>Business Details</Text>
               <View style={styles.MetaRowEditing}>
                 <Text style={styles.MetaTitleText}>Update Business Status</Text>
@@ -422,6 +431,51 @@ function QueueMeta({
                   onChangeText={(value) => setMessage(value)}
                 ></TextInput>
               </View>
+              <View
+                style={{
+                  marginTop: 5,
+                  marginBottom: 5,
+                  padding: 50,
+                  paddingBottom: 0,
+                  paddingTop: 0,
+                  backgroundColor: "white",
+                  display: "flex",
+                  flexDirection: "row",
+                  height: 80,
+                }}
+              >
+                <View style={styles.MetaTitleTextView}>
+                  <Text style={styles.MetaTitleText}>Number of Stations</Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    padding: 20,
+                    paddingTop: 15,
+                    borderRadius: 9,
+                    height: 50,
+                    display: "flex",
+                    flexDirection: "row",
+                    alignContent: "center",
+                    justifyContent: "flex-end",
+                    position: "relative",
+                    left: 20,
+                  }}
+                >
+                  <TextInput
+                    style={styles.MetaDataTextInputFlex}
+                    value={stationCount}
+                    keyboardType="numeric"
+                    onChangeText={(value) => setStationCount(value)}
+                    onBlur={() => {
+                      if (stationCount < 1 || stationCount === "") {
+                        setStationCount("1");
+                      }
+                    }}
+                  ></TextInput>
+                </View>
+              </View>
+
               <View style={styles.MetaRowEditing}>
                 <Text style={styles.MetaTitleText}>Business Name</Text>
                 <Text style={styles.MetaTitleTextSM}>

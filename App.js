@@ -115,6 +115,7 @@ export default class App extends Component {
           mask: queueData.mask,
           sani: queueData.sani,
           maxCount: queueData.maxCount["$numberLong"],
+          stationCount: queueData.stationCount["$numberLong"],
           businessNumber: queueData.businessNumber,
           monday: queueData.monday,
           tuesday: queueData.tuesday,
@@ -195,6 +196,7 @@ export default class App extends Component {
     mask,
     sani,
     maxCount,
+    stationCount,
     businessNumber,
     monday,
     tuesday,
@@ -223,6 +225,7 @@ export default class App extends Component {
             mask: mask,
             sani: sani,
             maxCount: parseInt(maxCount),
+            stationCount: parseInt(stationCount),
             businessNumber: businessNumber,
             monday,
             tuesday,
@@ -247,6 +250,7 @@ export default class App extends Component {
           mask: mask,
           sani: sani,
           maxCount: queueData.maxCount["$numberLong"],
+          stationCount: queueData.stationCount["$numberLong"],
           businessNumber: businessNumber,
           monday: queueData.monday,
           tuesday: queueData.tuesday,
@@ -371,12 +375,12 @@ function DisplayLogInSignUp({
           resetPassword={resetPassword}
         />
       ) : (
-        <SignUpContainer
-          queueMember={false}
-          toggleLogInSignUp={toggleLogInSignUp}
-          toggleLogIn={toggleLogIn}
-        ></SignUpContainer>
-      )}
+          <SignUpContainer
+            queueMember={false}
+            toggleLogInSignUp={toggleLogInSignUp}
+            toggleLogIn={toggleLogIn}
+          ></SignUpContainer>
+        )}
     </View>
   );
 }

@@ -4,20 +4,10 @@ import React, { useState, Component } from "react";
 import QueueMeta from "./QueueMeta";
 
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Image,
-  FlatList,
-  ListItem,
-  ImageBackground,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   Keyboard,
-  KeyboardAvoidingView,
 } from "react-native";
 
 class ManageQueue extends Component {
