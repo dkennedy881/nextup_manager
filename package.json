@@ -10,7 +10,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "~1.11.0",
     "@react-native-community/datetimepicker": "2.4.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "emailjs-com": "^2.4.1",
     "expo": "^38.0.0",
     "mongodb-stitch-react-native-sdk": "^4.8.0",
